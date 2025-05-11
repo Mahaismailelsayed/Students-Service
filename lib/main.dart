@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gradproject/Home/drawer/NotesScreen.dart';
 import 'package:gradproject/Home/drawer/courses_screen.dart';
 import 'package:gradproject/Home/home_screen.dart';
+import 'package:gradproject/Home/tabs/accScreen.dart';
+import 'package:gradproject/Home/tabs/fbScreen.dart';
+import 'package:gradproject/Home/tabs/newsScreen.dart';
+import 'package:gradproject/Home/tabs/notificationScreen.dart';
 import 'package:gradproject/auth/change_passsword.dart';
 import 'package:gradproject/auth/forget_password/forget_password_screen.dart';
 import 'package:gradproject/auth/global_password.dart';
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute:HomeScreen.RouteName,
+      initialRoute:LoginScreen.RouteName,
       routes: {
         SplashScreen.RouteName:(context)=>SplashScreen(),
         GlobalPassword.RouteName : (context)=>GlobalPassword(),
@@ -36,9 +41,18 @@ class MyApp extends StatelessWidget {
         VerificationAccount.RouteName:(context)=>VerificationAccount(),
         ForgetPasswordScreen.RouteName:(context)=>ForgetPasswordScreen(),
         HomeScreen.RouteName:(context)=>HomeScreen(),
+        AccScreen.RouteName:(context)=>AccScreen(),
+        FbScreen.RouteName:(context)=>FbScreen(),
+        NewsScreen.RouteName:(context)=>NewsScreen(),
+        NotificationsScreen.RouteName:(context)=>NotificationsScreen(),
+        CoursesScreen.RouteName:(context)=>CoursesScreen(),
+        CoursesScreen.RouteName:(context)=>CoursesScreen(),
+        CoursesScreen.RouteName:(context)=>CoursesScreen(),
+
         GpaScreen.RouteName : (context)=>GpaScreen(),
         ChangePasssword.RouteName:(context)=>SplashScreen(),
         CoursesScreen.RouteName:(context)=>CoursesScreen(),
+        NotesScreen.RouteName:(context)=>NotesScreen(),
 
       },// This trailing comma makes auto-formatting nicer for build methods.
     );

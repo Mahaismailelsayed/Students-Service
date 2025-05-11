@@ -9,6 +9,8 @@ import '../../core/app_colors.dart';
 import '../../core/notesModel.dart';
 
 class NotesScreen extends StatefulWidget {
+  static const String RouteName = 'notes_screen';
+
   const NotesScreen({super.key});
 
   @override

@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class GpaScreen extends StatefulWidget {
-  static const String RouteName = '/gpa_screen';
+  static const String RouteName = 'gpa_screen';
 
   @override
   State<GpaScreen> createState() => _GpaScreenState();

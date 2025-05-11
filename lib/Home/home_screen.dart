@@ -34,11 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int selectind = 2;
   var tabs = [
-    fbScreen(),
+    FbScreen(),
     GpaScreen(),
-    newsScreen(),
-    accScreen(),
-    notificationsScreen()
+    NewsScreen(),
+    AccScreen(),
+    NotificationsScreen()
   ];
 
   String userName = '';

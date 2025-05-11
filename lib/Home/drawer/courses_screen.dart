@@ -188,7 +188,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
             ),
             controller: controllers[index][1],
             decoration: const InputDecoration(border: InputBorder.none),
-            keyboardType: TextInputType.number,
             onChanged: (val) {
               courses[index]['day'] = val;
               _saveCourses(); // حفظ تلقائي عند التغيير
@@ -202,7 +201,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
             ),
             controller: controllers[index][2],
             decoration: const InputDecoration(border: InputBorder.none),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.datetime,
             onChanged: (val) {
               courses[index]['time'] = val;
               _saveCourses(); // حفظ تلقائي عند التغيير

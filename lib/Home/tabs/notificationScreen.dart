@@ -7,15 +7,15 @@ import '../../controllers/notification/NewsCard.dart';
 import '../../controllers/notification/NewsItem.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class notificationsScreen extends StatefulWidget {
-  const notificationsScreen({super.key});
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
   static const RouteName = 'notificationScreen';
 
   @override
-  State<notificationsScreen> createState() => _notificationsScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _notificationsScreenState extends State<notificationsScreen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   List<NewsItem> newsItems = [];
   bool isLoading = true;
   bool hasNewNotifications = false;

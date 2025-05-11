@@ -3,15 +3,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class fbScreen extends StatefulWidget {
-  const fbScreen({super.key});
-  static const routeName = 'fbScreen';
+class FbScreen extends StatefulWidget {
+  const FbScreen({super.key});
+  static const RouteName = 'fbScreen';
 
   @override
-  State<fbScreen> createState() => _fbScreenState();
+  State<FbScreen> createState() => _FbScreenState();
 }
 
-class _fbScreenState extends State<fbScreen> {
+class _FbScreenState extends State<FbScreen> {
   late final WebViewController controller;
   bool _isLoading = true;
   bool _isConnected = true; // Track internet connection status

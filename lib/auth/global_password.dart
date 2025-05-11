@@ -132,7 +132,6 @@ class _GlobalPasswordState extends State<GlobalPassword> {
                           SizedBox(height: 18),
                           TextFormField(
                             controller: globalPasswordController,
-                            keyboardType: TextInputType.number,
                             obscureText: true,
                             cursorColor: AppColors.goldColor,
                             decoration: InputDecoration(

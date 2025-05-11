@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart'; // Add this package
 
-class newsScreen extends StatefulWidget {
-  const newsScreen({super.key});
+class NewsScreen extends StatefulWidget {
+  const NewsScreen({super.key});
 
-  static const routeName = 'newsScreen';
+  static const RouteName = 'newsScreen';
 
   @override
-  State<newsScreen> createState() => _newsScreenState();
+  State<NewsScreen> createState() => _NewsScreenState();
 }
 
-class _newsScreenState extends State<newsScreen> {
+class _NewsScreenState extends State<NewsScreen> {
   late final WebViewController controller;
   bool _isLoading = true; // Track loading status
   bool _isConnected = true; // Track internet connection status

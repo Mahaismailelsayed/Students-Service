@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-class accScreen extends StatefulWidget {
-  const accScreen({super.key});
-  static const routeName = 'accScreen';
+class AccScreen extends StatefulWidget {
+  const AccScreen({super.key});
+  static const RouteName = 'accScreen';
 
   @override
-  State<accScreen> createState() => _accScreenState();
+  State<AccScreen> createState() => _AccScreenState();
 }
 
-class _accScreenState extends State<accScreen> {
+class _AccScreenState extends State<AccScreen> {
   late final WebViewController controller;
   bool _isLoading = true;
   bool _isConnected = true; // Track internet connection status

@@ -8,7 +8,7 @@ import '../core/app_colors.dart';
 import '../widgets/custom_gradient_appbar.dart';
 
 class ChangePasssword extends StatefulWidget {
-  static const String RouteName = '/change_password';
+  static const String RouteName = 'change_password';
 
   const ChangePasssword({super.key});
 
