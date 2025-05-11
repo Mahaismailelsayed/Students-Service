@@ -45,13 +45,8 @@ class MyApp extends StatelessWidget {
         FbScreen.RouteName:(context)=>FbScreen(),
         NewsScreen.RouteName:(context)=>NewsScreen(),
         NotificationsScreen.RouteName:(context)=>NotificationsScreen(),
-        CoursesScreen.RouteName:(context)=>CoursesScreen(),
-        CoursesScreen.RouteName:(context)=>CoursesScreen(),
-        CoursesScreen.RouteName:(context)=>CoursesScreen(),
-
         GpaScreen.RouteName : (context)=>GpaScreen(),
         ChangePasssword.RouteName:(context)=>SplashScreen(),
-        CoursesScreen.RouteName:(context)=>CoursesScreen(),
         NotesScreen.RouteName:(context)=>NotesScreen(),
 
       },// This trailing comma makes auto-formatting nicer for build methods.
