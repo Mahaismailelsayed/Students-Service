@@ -6,6 +6,8 @@ import '../../widgets/custom_gradient_appbar.dart';
 import '../home_screen.dart';
 
 class CoursesScreen extends StatefulWidget {
+  static const String RouteName = 'courses_entry';
+
   const CoursesScreen({super.key});
 
   @override
@@ -112,8 +114,15 @@ class _CoursesScreenState extends State<CoursesScreen> {
       print("📚 ${course['name']} - ${course['code']} - ${course['hours']}");
     }
     _saveCourses();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم حفظ الكورسات')),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Success",style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20)),
+        content: const Text('Courses Are Saved',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w400 ,fontSize:18)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
     );
   }
   Widget styledText(String text) {
@@ -137,12 +146,13 @@ class _CoursesScreenState extends State<CoursesScreen> {
         inside: BorderSide(width: 1, color: AppColors.goldColor),
         outside: BorderSide(width: 1, color: AppColors.goldColor),
       ),
-      columnSpacing: 38,
+      columnSpacing: 4,
       columns: const [
         DataColumn(label: Align(
             alignment: Alignment.centerLeft,
             child: Text('Course Name',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20)))),
-        DataColumn(label: Text('Hours',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20))),
+        DataColumn(label: Text('Day',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20))),
+        DataColumn(label: Text('Time',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20))),
         DataColumn(label: Text('Delete',style: TextStyle(color: AppColors.lightGreenColor,fontWeight:FontWeight.w700 ,fontSize:20))),
       ],
       rows: List.generate(courses.length, (index) {
@@ -170,6 +180,21 @@ class _CoursesScreenState extends State<CoursesScreen> {
             ),
           ),),
           DataCell(TextFormField(
+            maxLines: null, // السماح بأسطر متعددة
+            cursorColor: AppColors.goldColor,
+            style: const TextStyle(
+              fontSize: 20,
+              color: AppColors.lightGreenColor,
+            ),
+            controller: controllers[index][1],
+            decoration: const InputDecoration(border: InputBorder.none),
+            keyboardType: TextInputType.number,
+            onChanged: (val) {
+              courses[index]['day'] = val;
+              _saveCourses(); // حفظ تلقائي عند التغيير
+            },
+          )),
+          DataCell(TextFormField(
             cursorColor: AppColors.goldColor,
             style: const TextStyle(
               fontSize: 20,
@@ -179,10 +204,11 @@ class _CoursesScreenState extends State<CoursesScreen> {
             decoration: const InputDecoration(border: InputBorder.none),
             keyboardType: TextInputType.number,
             onChanged: (val) {
-              courses[index]['hours'] = val;
+              courses[index]['time'] = val;
               _saveCourses(); // حفظ تلقائي عند التغيير
             },
           )),
+
           DataCell(IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () => _deleteRow(index),

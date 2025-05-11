@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradproject/Home/drawer/courses_screen.dart';
 import 'package:gradproject/Home/home_screen.dart';
 import 'package:gradproject/auth/change_passsword.dart';
 import 'package:gradproject/auth/forget_password/forget_password_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.RouteName:(context)=>HomeScreen(),
         GpaScreen.RouteName : (context)=>GpaScreen(),
         ChangePasssword.RouteName:(context)=>SplashScreen(),
+        CoursesScreen.RouteName:(context)=>CoursesScreen(),
 
       },// This trailing comma makes auto-formatting nicer for build methods.
     );
