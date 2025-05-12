@@ -90,8 +90,8 @@ To build and run the app from source, follow these steps:
   * Download and install Git from git-scm.com.
   *  Install Android Studio from developer.android.com.
   *   Install Flutter SDK:
-    ** Download from flutter.dev.
-    ** Extract to C:\flutter and add C:\flutter\bin to your system PATH.
+     ** Download from flutter.dev.
+     ** Extract to C:\flutter and add C:\flutter\bin to your system PATH.
   * Install JDK 11 from oracle.com.
 
 2. Clone the Repository:
