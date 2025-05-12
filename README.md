@@ -124,10 +124,10 @@ To build and run the app from source, follow these steps:
 * Install Xcode from the Mac App Store.
 
 * Install Flutter SDK:
-  
-    ** Download from flutter.dev.
 
-    ** Extract to ~/flutter and add ~/flutter/bin to your PATH (edit ~/.zshrc or ~/.bashrc).
+  ** Download from flutter.dev.
+
+  ** Extract to ~/flutter and add ~/flutter/bin to your PATH (edit ~/.zshrc or ~/.bashrc).
 
 * Install JDK 11 using Homebrew: brew install openjdk@11.
 
