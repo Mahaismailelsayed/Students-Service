@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gradproject/core/app_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/number_range.dart';
 
 class GpaScreen extends StatefulWidget {
   static const String RouteName = 'gpa_screen';
@@ -13,8 +15,6 @@ class GpaScreen extends StatefulWidget {
 }
 
 class _GpaScreenState extends State<GpaScreen> {
-
-
   final List<String> options = ["A", "A-", "B+", "B", "C+", "C", "D", "F"];
   List<List<TextEditingController>> _controllers = [];
   TextEditingController _prevHoursController = TextEditingController();
@@ -56,7 +56,7 @@ class _GpaScreenState extends State<GpaScreen> {
       _controllers.add([
         TextEditingController(),
         TextEditingController(),
-        TextEditingController()
+        TextEditingController(),
       ]);
     });
   }
@@ -86,10 +86,9 @@ class _GpaScreenState extends State<GpaScreen> {
     return 0;
   }
 
-
   Future<void> SavedGpaData() async {
     final prefs = await SharedPreferences.getInstance();
-    String? userName = prefs.getString('userName'); // استرجاع اسم المستخدم
+    String? userName = prefs.getString('userName');
 
     if (userName != null) {
       double? savedGpa = prefs.getDouble('$userName-savedCumulativeGpa');
@@ -150,25 +149,25 @@ class _GpaScreenState extends State<GpaScreen> {
         final result = jsonDecode(response.body);
         double gpa = result;
 
-        // استرجاع اسم المستخدم من SharedPreferences
         final prefs = await SharedPreferences.getInstance();
-        String? userName = prefs.getString('userName'); // استرجاع اسم المستخدم
+        String? userName = prefs.getString('userName');
 
         if (userName == null) {
           _showDialog("Error", "User is not logged in.");
           return;
         }
 
-        // استرجاع البيانات المخزنة بناءً على اسم المستخدم
         double prevHours = prefs.getDouble('$userName-savedCreditHours') ?? 0;
         double prevGpa = prefs.getDouble('$userName-savedCumulativeGpa') ?? 0;
 
         double currentQualityPoints = gpa * totalCredits;
         double previousQualityPoints = prevGpa * prevHours;
-        double cumulativeQualityPoints = currentQualityPoints + previousQualityPoints;
+        double cumulativeQualityPoints =
+            currentQualityPoints + previousQualityPoints;
 
         double totalAllCredits = totalCredits + prevHours;
-        double cumulativeGpa = totalAllCredits > 0 ? cumulativeQualityPoints / totalAllCredits : 0;
+        double cumulativeGpa =
+            totalAllCredits > 0 ? cumulativeQualityPoints / totalAllCredits : 0;
 
         _showDialog(
           "GPA Results",
@@ -180,19 +179,21 @@ class _GpaScreenState extends State<GpaScreen> {
               _prevGpaController.text = cumulativeGpa.toStringAsFixed(2);
             });
 
-            // تخزين البيانات باستخدام اسم المستخدم كمفتاح
-            await prefs.setDouble('$userName-savedCumulativeGpa', cumulativeGpa);
-            await prefs.setDouble('$userName-savedCreditHours', totalAllCredits);
+            await prefs.setDouble(
+                '$userName-savedCumulativeGpa', cumulativeGpa);
+            await prefs.setDouble(
+                '$userName-savedCreditHours', totalAllCredits);
 
-            // تحديث الـ GPA في الخادم
             await _updateGpa(cumulativeGpa);
           },
         );
       } else {
-        _showDialog("Error", "Failed to calculate GPA.\nStatus code: ${response.statusCode}\n${response.body}");
+        _showDialog("Error",
+            "Failed to calculate GPA.\nStatus code: ${response.statusCode}\n${response.body}");
       }
     } catch (e) {
-      _showDialog("Connection Error", "Could not connect to server. Please try again.\n$e");
+      _showDialog("Connection Error",
+          "Could not connect to server. Please try again.\n$e");
     }
   }
 
@@ -243,7 +244,8 @@ class _GpaScreenState extends State<GpaScreen> {
                 Navigator.pop(context);
                 if (onConfirm != null) onConfirm();
               },
-              child: Text("Save",style:TextStyle(color:AppColors.primaryColor)),
+              child:
+                  Text("Save", style: TextStyle(color: AppColors.primaryColor)),
             ),
           ],
         );
@@ -252,7 +254,28 @@ class _GpaScreenState extends State<GpaScreen> {
   }
 
   Widget _buildTextField(TextEditingController controller, String hintText,
-      {int flex = 1, bool isNumber = false}) {
+      {int flex = 1, bool isNumber = false, bool isCredit = false}) {
+    if (isCredit) {
+      // استخدام NumberInputField لحقل الـ Credit
+      return Expanded(
+        flex: flex,
+        child: NumberInputField(
+          controller: controller,
+          labelText: hintText.isEmpty ? 'Credit' : hintText,
+          // تخصيص الـ decoration لتتماشى مع التصميم
+          decoration: InputDecoration(
+            hintText: hintText.isEmpty ? 'Credit' : hintText,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+            ),
+          ),
+        ),
+      );
+    }
+    // استخدام TextField العادي للحقول الأخرى
     return Expanded(
       flex: flex,
       child: TextField(
@@ -347,33 +370,44 @@ class _GpaScreenState extends State<GpaScreen> {
           child: ListView(
             children: [
               SizedBox(height: 10),
-
-              /// عرض الساعات السابقة والمعدل التراكمي المحفوظ
               Row(
                 children: [
                   Expanded(
                     child: FutureBuilder<double>(
                       future: _getPrevHours(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Text(
                             'Prev Hours: Loading...',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else if (snapshot.hasError) {
                           return Text(
                             'Prev Hours: Error loading data',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else if (snapshot.hasData) {
                           return Text(
                             'Prev Hours: ${snapshot.data?.toStringAsFixed(0) ?? '0'}',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else {
                           return Text(
                             'Prev Hours: 0',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         }
                       },
@@ -383,25 +417,38 @@ class _GpaScreenState extends State<GpaScreen> {
                     child: FutureBuilder<double>(
                       future: _getPrevGpa(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Text(
                             'Prev GPA: Loading...',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else if (snapshot.hasError) {
                           return Text(
                             'Prev GPA: Error loading data',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else if (snapshot.hasData) {
                           return Text(
                             'Prev GPA: ${snapshot.data?.toStringAsFixed(2) ?? '0.00'}',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         } else {
                           return Text(
                             'Prev GPA: 0.00',
-                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w700),
                           );
                         }
                       },
@@ -420,8 +467,6 @@ class _GpaScreenState extends State<GpaScreen> {
                   ],
                 ),
               ),
-
-              /// صفوف الإدخال
               ...List.generate(_controllers.length, (index) {
                 return Padding(
                   padding:
@@ -433,7 +478,7 @@ class _GpaScreenState extends State<GpaScreen> {
                             flex: 4),
                         SizedBox(width: 10),
                         _buildTextField(_controllers[index][1], '',
-                            flex: 2, isNumber: true),
+                            flex: 2, isNumber: true, isCredit: true),
                         SizedBox(width: 10),
                         _buildDropdownField(index),
                         Expanded(
@@ -448,8 +493,6 @@ class _GpaScreenState extends State<GpaScreen> {
                   ),
                 );
               }),
-
-              /// زر الإضافة
               Center(
                 child: ElevatedButton(
                   onPressed: _addTextFieldRow,
@@ -477,10 +520,7 @@ class _GpaScreenState extends State<GpaScreen> {
                   ),
                 ),
               ),
-
               SizedBox(height: 10),
-
-              /// زر الحساب
               Center(
                 child: ElevatedButton(
                   onPressed: _calculateGpa,
@@ -501,8 +541,6 @@ class _GpaScreenState extends State<GpaScreen> {
                   ),
                 ),
               ),
-
-
               SizedBox(height: 20),
             ],
           ),
