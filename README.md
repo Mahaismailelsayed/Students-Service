@@ -80,7 +80,7 @@ If you don’t want to build the project from source, you can run the ready-to-u
 
 ---
 
-##🛠️ Development Setup (Build and Run from Source)
+### 🛠️ Development Setup (Build and Run from Source)
 
 To build and run the app from source, follow these steps:
 
