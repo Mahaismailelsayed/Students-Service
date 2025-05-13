@@ -121,6 +121,14 @@ class AuthCubit extends Cubit<AuthState> {
       required String password,
       required String confirmPassword,
       required String NID}) async {
+
+    String? validatePassword(String password) {
+      if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z]).{6,}$').hasMatch(password)) {
+        return "كلمة المرور يجب أن تحتوي على حرف كبير وحرف صغير على الأقل، ويجب ألا تقل عن 6 أحرف";
+      }
+      return null;
+    }
+
     String? validateNID(String nid) {
       if (!RegExp(r'^\d{14}$').hasMatch(nid)) {
         return "الرقم القومي يجب أن يكون 14 رقمًا";
@@ -135,6 +143,7 @@ class AuthCubit extends Cubit<AuthState> {
       return null;
     }
 
+    final passwordError = validatePassword(password);
     final nidError = validateNID(NID);
     final phoneError = validatePhone(phone);
 
@@ -145,6 +154,11 @@ class AuthCubit extends Cubit<AuthState> {
 
     if (phoneError != null) {
       emit(FailedState(message: phoneError));
+      return;
+    }
+
+    if (passwordError != null) {
+      emit(FailedState(message: passwordError));
       return;
     }
 
