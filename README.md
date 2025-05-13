@@ -80,19 +80,19 @@ If you don’t want to build the project from source, you can run the ready-to-u
 
 ---
 
-##🛠️ Development Setup (Build and Run from Source)
+### 🛠️ Development Setup (Build and Run from Source)
 
 To build and run the app from source, follow these steps:
 
 🔹 For Windows
 
 1. Install Prerequisites:
-  * Download and install Git from git-scm.com.
+  *  Download and install Git from git-scm.com.
   *  Install Android Studio from developer.android.com.
-  *   Install Flutter SDK:
-  **      Download from flutter.dev.
-  **      Extract to C:\flutter and add C:\flutter\bin to your system PATH.
-  * Install JDK 11 from oracle.com.
+  *  Install Flutter SDK:
+  *    Download from flutter.dev.
+  *    Extract to C:\flutter and add C:\flutter\bin to your system PATH.
+  *  Install JDK 11 from oracle.com.
 
 2. Clone the Repository:
    ```bash
@@ -125,9 +125,9 @@ To build and run the app from source, follow these steps:
 
 * Install Flutter SDK:
 
-  ** Download from flutter.dev.
+ ** Download from flutter.dev.
 
-  ** Extract to ~/flutter and add ~/flutter/bin to your PATH (edit ~/.zshrc or ~/.bashrc).
+ ** Extract to ~/flutter and add ~/flutter/bin to your PATH (edit ~/.zshrc or ~/.bashrc).
 
 * Install JDK 11 using Homebrew: brew install openjdk@11.
 
