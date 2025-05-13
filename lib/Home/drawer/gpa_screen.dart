@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:gradproject/core/app_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../core/number_range.dart';
 
 class GpaScreen extends StatefulWidget {

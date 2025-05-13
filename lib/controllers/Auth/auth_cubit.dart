@@ -12,7 +12,6 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
 
-
   Future<void> Logout(BuildContext context) async {
     emit(LoadingState());
 
@@ -190,8 +189,10 @@ class AuthCubit extends Cubit<AuthState> {
           emit(SuccessState());
 
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('email', data['email']); // أو أي حقل يمثل اسم المستخدم
-
+          if (data['email'] != null) {
+            prefs.setString(
+                'email', data['email']); // أو أي حقل يمثل اسم المستخدم
+          }
         } else {
           debugPrint("📌 Full Response: ${response.body}");
           emit(FailedState(message: data['message']));
@@ -207,7 +208,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //Login http
-  Future<void> Login({required String userName, required String password}) async {
+  Future<void> Login(
+      {required String userName, required String password}) async {
     emit(LoadingState());
 
     try {
@@ -268,7 +270,8 @@ class AuthCubit extends Cubit<AuthState> {
 
       // ✅ تخزين التوكن وال userName في SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('userName', data['userName']); // أو أي حقل يمثل اسم المستخدم
+      prefs.setString(
+          'userName', data['userName']); // أو أي حقل يمثل اسم المستخدم
       await prefs.setString('token', token);
       print("🔐 Token Stored Successfully!");
 
@@ -324,7 +327,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> Validateotp({ required String otp}) async {
+  Future<void> Validateotp({required String otp}) async {
     // Emit loading state
     emit(LoadingState());
     // Validate input
@@ -376,7 +379,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //ForgetPass http
-  Future<void> ForgetPassword({required String userName, required String email, required String newPassword, required String confirmNewPassword}) async {
+  Future<void> ForgetPassword(
+      {required String userName,
+      required String email,
+      required String newPassword,
+      required String confirmNewPassword}) async {
     emit(LoadingState());
 
     try {
@@ -412,7 +419,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //ChangePass
-  Future<void>ChangePass({required String userName, required String oldPassword, required String newPassword})async{
+  Future<void> ChangePass(
+      {required String userName,
+      required String oldPassword,
+      required String newPassword}) async {
     emit(LoadingState());
 
     try {
@@ -420,7 +430,7 @@ class AuthCubit extends Cubit<AuthState> {
         Uri.parse("http://gpa.runasp.net/api/Account/ResetPassword"),
         headers: {
           "Content-Type":
-          "application/json", // ✅ تأكيد إرسال البيانات بصيغة JSON
+              "application/json", // ✅ تأكيد إرسال البيانات بصيغة JSON
         },
         body: jsonEncode({
           "userName": userName,
