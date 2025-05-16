@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {

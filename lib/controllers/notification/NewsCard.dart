@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/controllers/notification/NewsItem.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import '../../core/app_colors.dart';
 
 class NewsCard extends StatefulWidget {
@@ -16,7 +14,6 @@ class NewsCard extends StatefulWidget {
 }
 
 class _NewsCardState extends State<NewsCard> {
-  late final WebViewController controller;
   bool _isLoading = true;
 
   void openLink(String url) {
@@ -27,15 +24,14 @@ class _NewsCardState extends State<NewsCard> {
       MaterialPageRoute(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.white, size: 24.sp),
             backgroundColor: Colors.transparent,
             elevation: 0,
-
-            flexibleSpace:  Container(
+            flexibleSpace: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+                  topLeft: Radius.circular(30.r),
+                  bottomRight: Radius.circular(30.r),
                 ),
                 gradient: LinearGradient(
                   colors: [AppColors.primaryColor, AppColors.lightGreenColor],
@@ -44,12 +40,15 @@ class _NewsCardState extends State<NewsCard> {
                 ),
               ),
             ),
-            title: Text('News Details',
-                style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontFamily: 'IMPRISHA',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700)),
+            title: Text(
+              'News Details',
+              style: TextStyle(
+                color: AppColors.whiteColor,
+                fontFamily: 'IMPRISHA',
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
           body: WebViewWidget(
             controller: WebViewController()
@@ -68,16 +67,13 @@ class _NewsCardState extends State<NewsCard> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-
-      onTap: () => openLink(widget.item.link), // Double tap for WebView
+      onTap: () => openLink(widget.item.link),
       child: Container(
         color: Colors.white,
-        padding:  EdgeInsets.all(8),
+        padding: EdgeInsets.all(8.w),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,23 +86,27 @@ class _NewsCardState extends State<NewsCard> {
                   // Date row
                   Row(
                     children: [
-                       Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-                       SizedBox(width: 4),
+                      Icon(
+                        Icons.calendar_today,
+                        size: 16.sp,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(width: 4.w),
                       Text(
                         widget.item.date,
-                        style:  TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: 14.sp,
                           color: Colors.grey,
                         ),
                       ),
                     ],
                   ),
-                   SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     widget.item.title,
-                    style:  TextStyle(
+                    style: TextStyle(
                       color: Color(0xff143109),
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 2,
@@ -115,25 +115,29 @@ class _NewsCardState extends State<NewsCard> {
                 ],
               ),
             ),
-             SizedBox(width: 12),
+            SizedBox(width: 12.w),
             // Image container (right side)
             Container(
-              width: 120,
-              height: 120,
+              width: 120.w,
+              height: 120.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
                 child: Image.network(
                   widget.item.imageUrl.isNotEmpty
                       ? widget.item.imageUrl
-                      : 'https://science.asu.edu.eg/storage//uploads/2021/Nov/app/YIyDxLvs61GeHV6M.png',
+                      : 'https://science.asu.edu.eg/storage//Uploads/2021/Nov/app/YIyDxLvs61GeHV6M.png',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
                     color: Colors.grey[200],
-                    child:  Center(
-                      child: Icon(Icons.image, size: 40, color: Colors.grey),
+                    child: Center(
+                      child: Icon(
+                        Icons.image,
+                        size: 40.sp,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),

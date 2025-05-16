@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/auth/forget_password/send_otp.dart';
 import 'package:gradproject/core/app_colors.dart';
 import 'package:gradproject/widgets/custom_arrow.dart';
@@ -18,10 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   bool isSecure = true;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,12 @@ class _LoginScreenState extends State<LoginScreen> {
           } else if (state is FailedState) {
             print("❌ Login Failed ${state.message}");
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(
+                content: Text(
+                  state.message,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+              ),
             );
           }
         },
@@ -51,25 +54,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: 0.5.sh,
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
+                        topLeft: Radius.circular(25.r),
+                        topRight: Radius.circular(25.r),
                       ),
                     ),
                   ),
                 ),
-
                 // اللوجو واسم الجامعة
                 Positioned(
-                  top: 60,
-                  left: 27,
+                  top: 60.h,
+                  left: 27.w,
                   child: Row(
                     children: [
-                      Image.asset("assets/images/logo.png", height: 80),
+                      Image.asset("assets/images/logo.png", height: 80.h),
                       Column(
                         children: [
                           Text(
@@ -77,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'ENGR',
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor,
                             ),
@@ -87,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'andlso',
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.primaryColor,
                             ),
@@ -97,21 +99,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-
                 // نموذج تسجيل الدخول
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.28,
-                  left: 20,
-                  right: 20,
+                  bottom: 0.28.sh,
+                  left: 20.w,
+                  right: 20.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                     decoration: BoxDecoration(
                       color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
-                          blurRadius: 10,
+                          blurRadius: 10.r,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -123,18 +124,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "Login",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor,
                             ),
                           ),
                           Container(
-                            height: 2.5,
+                            height: 2.5.h,
                             color: AppColors.primaryColor,
-                            width: 55,
+                            width: 55.w,
                           ),
-                          SizedBox(height: 15),
-
+                          SizedBox(height: 15.h),
                           // إدخال اسم المستخدم
                           CustomTextFormField(
                             hint: 'username',
@@ -143,24 +143,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           // إدخال كلمة المرور
                           CustomTextFormField(
-                              hint: 'password',
-                              label: 'Password',
-                              controller: passwordController,
+                            hint: 'password',
+                            label: 'Password',
+                            controller: passwordController,
                             isSecure: true,
                           ),
-                          SizedBox(
-                            height: 10,
-                          )
+                          SizedBox(height: 10.h),
                         ],
                       ),
                     ),
                   ),
                 ),
-
                 // زر تسجيل الدخول
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.23,
-                  left: MediaQuery.of(context).size.width * 0.4,
+                  bottom: 0.23.sh,
+                  left: 0.4.sw,
                   child: InkWell(
                     onTap: () {
                       if (formKey.currentState?.validate() ?? false) {
@@ -170,39 +167,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       }
                     },
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(50.r),
                     child: CustomArrow(),
                   ),
                 ),
                 Positioned(
-                    bottom: MediaQuery.of(context).size.height * 0.19,
-                    left: MediaQuery.of(context).size.width * 0.04,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Forget Your Password?',
+                  bottom: 0.19.sh,
+                  left: 0.04.sw,
+                  child: Row(
+                    children: [
+                      Text(
+                        'Forget Your Password?',
+                        style: TextStyle(
+                          color: AppColors.whiteColor,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SendOtp()),
+                          );
+                        },
+                        child: Text(
+                          ' Click here',
                           style: TextStyle(
-                            color: AppColors.whiteColor,
-                            fontSize: 15,
+                            color: AppColors.goldColor,
+                            fontSize: 15.sp,
                           ),
                         ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SendOtp()));
-                            },
-                            child: Text(
-                              ' Click here',
-                              style: TextStyle(
-                                color: AppColors.goldColor,
-                                fontSize: 15,
-                              ),
-                            )),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );

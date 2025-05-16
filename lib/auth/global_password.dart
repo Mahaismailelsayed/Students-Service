@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/auth/register/register_screen.dart';
 import 'package:gradproject/widgets/custom_arrow.dart';
 import '../controllers/Auth/auth_cubit.dart';
@@ -31,7 +32,12 @@ class _GlobalPasswordState extends State<GlobalPassword> {
             );
           } else if (state is FailedState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(
+                content: Text(
+                  state.message,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+              ),
             );
           }
         },
@@ -40,17 +46,18 @@ class _GlobalPasswordState extends State<GlobalPassword> {
             backgroundColor: AppColors.whiteColor,
             body: Stack(
               children: [
+                // Bottom Colored Section
                 Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: 0.5.sh,
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
+                        topLeft: Radius.circular(25.r),
+                        topRight: Radius.circular(25.r),
                       ),
                     ),
                   ),
@@ -58,12 +65,15 @@ class _GlobalPasswordState extends State<GlobalPassword> {
 
                 // Top Section (White with Logo & Text)
                 Positioned(
-                  top: 60,
-                  left: 27,
+                  top: 60.h,
+                  left: 27.w,
                   child: Row(
                     children: [
                       // University Logo
-                      Image.asset("assets/images/logo.png", height: 80),
+                      Image.asset(
+                        "assets/images/logo.png",
+                        height: 80.h,
+                      ),
                       // University Name
                       Column(
                         children: [
@@ -72,7 +82,7 @@ class _GlobalPasswordState extends State<GlobalPassword> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'ENGR',
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor,
                             ),
@@ -82,7 +92,7 @@ class _GlobalPasswordState extends State<GlobalPassword> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'andlso',
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.primaryColor,
                             ),
@@ -95,18 +105,18 @@ class _GlobalPasswordState extends State<GlobalPassword> {
 
                 // Form Container
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.4,
-                  left: 20,
-                  right: 20,
+                  bottom: 0.4.sh,
+                  left: 20.w,
+                  right: 20.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                     decoration: BoxDecoration(
                       color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
-                          blurRadius: 10,
+                          blurRadius: 10.r,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -119,53 +129,61 @@ class _GlobalPasswordState extends State<GlobalPassword> {
                             "Global Password",
                             style: TextStyle(
                               fontStyle: FontStyle.normal,
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor,
                             ),
                           ),
                           Container(
-                            height: 2.5,
+                            height: 2.5.h,
                             color: AppColors.primaryColor,
-                            width: 135,
+                            width: 135.w,
                           ),
-                          SizedBox(height: 18),
+                          SizedBox(height: 18.h),
                           TextFormField(
                             controller: globalPasswordController,
                             obscureText: true,
                             cursorColor: AppColors.goldColor,
+                            style: TextStyle(fontSize: 15.sp),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: AppColors.whiteColor,
                               hintText: "Global Password",
                               hintStyle: TextStyle(
-                                  color: AppColors.lightGrayColor,
-                                  fontSize: 15),
+                                color: AppColors.lightGrayColor,
+                                fontSize: 15.sp,
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppColors.goldColor, width: 1.5),
-                                borderRadius: BorderRadius.circular(18),
+                                  color: AppColors.goldColor,
+                                  width: 1.5.w,
+                                ),
+                                borderRadius: BorderRadius.circular(18.r),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppColors.goldColor, width: 1),
-                                borderRadius: BorderRadius.circular(18),
+                                  color: AppColors.goldColor,
+                                  width: 1.w,
+                                ),
+                                borderRadius: BorderRadius.circular(18.r),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color(0xffAA3229), width: 1),
-                                borderRadius: BorderRadius.circular(18),
+                                  color: Color(0xffAA3229),
+                                  width: 1.w,
+                                ),
+                                borderRadius: BorderRadius.circular(18.r),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color(0xffAA3229), width: 1.5),
-                                borderRadius: BorderRadius.circular(18),
+                                  color: Color(0xffAA3229),
+                                  width: 1.5.w,
+                                ),
+                                borderRadius: BorderRadius.circular(18.r),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          )
+                          SizedBox(height: 10.h),
                         ],
                       ),
                     ),
@@ -174,8 +192,8 @@ class _GlobalPasswordState extends State<GlobalPassword> {
 
                 // Submit Button
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.34,
-                  left: MediaQuery.of(context).size.width * 0.4,
+                  bottom: 0.36.sh,
+                  left: 0.42.sw,
                   child: InkWell(
                     onTap: () {
                       if (formKey.currentState!.validate()) {
@@ -184,7 +202,7 @@ class _GlobalPasswordState extends State<GlobalPassword> {
                         );
                       }
                     },
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(50.r),
                     child: CustomArrow(),
                   ),
                 ),

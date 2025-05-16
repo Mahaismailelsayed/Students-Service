@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/Home/drawer/courses_screen.dart';
 import 'package:gradproject/auth/login/login_screen.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:gradproject/Home/tabs/accScreen.dart';
 import 'package:gradproject/Home/tabs/fbScreen.dart';
@@ -11,7 +11,6 @@ import 'package:gradproject/Home/tabs/newsScreen.dart';
 import 'package:gradproject/Home/tabs/notificationScreen.dart';
 import 'package:gradproject/Home/drawer/gpa_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'drawer/NotesScreen.dart';
 import '../controllers/Auth/auth_cubit.dart';
 import '../controllers/information/data_cubit.dart';
@@ -382,21 +381,21 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               actions: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10.0), // Add some padding to the right
+                  padding:  EdgeInsets.only(right: 10.0.w), // Add some padding to the right
                   child: CircleAvatar(
-                    radius: 18, // Adjust the size of the photo
+                    radius: 18.r, // Adjust the size of the photo
                     backgroundImage: AssetImage('assets/images/logo.png'), // Replace with your image path
                   ),
                 ),
               ],
               backgroundColor: Color(0xff143109),
-              title: const Column(
+              title:  Column(
                 children: [
                   Text(
                     'Faculty Of Science ASU',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 13,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'ENGR',
                     ),
@@ -404,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('كلية العلوم جامعة عين شمس',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'andlso',
                       )),
@@ -414,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   false, // Prevents Flutter from adding default back button
               leading: Builder(
                 builder: (context) => IconButton(
-                  icon: Icon(Icons.menu, color: Colors.white),
+                  icon: Icon(Icons.menu, color: Colors.white,size: 25.r,),
                   onPressed: () {
                     Scaffold.of(context).openDrawer(); // Opens the drawer
                   },

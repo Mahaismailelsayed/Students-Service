@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/core/app_colors.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String? label;
   final String hint;
-
   final TextEditingController controller;
   final bool isSecure;
   final TextInputType keyboardType;
@@ -40,13 +40,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           Text(
             widget.label!,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 15.sp, // تكييف حجم الخط
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor, // يمكنك تغيير اللون ليكون متوافقًا مع `AppColors`
+              color: AppColors.primaryColor,
             ),
           ),
         ],
-        SizedBox(height: 5),
+        SizedBox(height: 5.h), // تكييف الارتفاع
         TextFormField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
@@ -55,36 +55,40 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.whiteColor,
-            hintText: "${widget.hint}",
-            hintStyle: TextStyle(color: AppColors.lightGrayColor, fontSize: 15),
+            hintText: widget.hint,
+            hintStyle: TextStyle(
+              color: AppColors.lightGrayColor,
+              fontSize: 15.sp, // تكييف حجم الخط
+            ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.goldColor, width: 1.5),
-              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: AppColors.goldColor, width: 1.5.w), // تكييف عرض الحد
+              borderRadius: BorderRadius.circular(18.r), // تكييف نصف القطر
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.goldColor, width: 1),
-              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: AppColors.goldColor, width: 1.w), // تكييف عرض الحد
+              borderRadius: BorderRadius.circular(18.r),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffAA3229), width: 1),
-              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: const Color(0xffAA3229), width: 1.w),
+              borderRadius: BorderRadius.circular(18.r),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffAA3229), width: 1.5),
-              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: const Color(0xffAA3229), width: 1.5.w),
+              borderRadius: BorderRadius.circular(18.r),
             ),
             suffixIcon: widget.isSecure
                 ? IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.primaryColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                  )
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+                color: AppColors.primaryColor,
+                size: 20.sp, // تكييف حجم الأيقونة
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+            )
                 : null,
           ),
           validator: (input) {
@@ -94,7 +98,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             return null;
           },
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 10.h), // تكييف الارتفاع
       ],
     );
   }

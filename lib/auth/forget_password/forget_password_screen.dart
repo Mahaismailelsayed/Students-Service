@@ -17,15 +17,10 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final userNameController = TextEditingController();
-
   final emailController = TextEditingController();
-
   final newPasswordController = TextEditingController();
-
   final confirmNewPasswordController = TextEditingController();
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   bool isSecure = true;
 
   void _togglePasswordVisibility() {
@@ -49,15 +44,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Success'),
-                content: const Text('Password changed successfully'),
+                title: Text('Success', style: TextStyle(fontSize: 18.sp)),
+                content: Text('Password changed successfully', style: TextStyle(fontSize: 14.sp)),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15.r),
                 ),
               ),
             );
             Future.delayed(const Duration(seconds: 2), () {
-              Navigator.of(context, rootNavigator: true).pop(); // يغلق الديالوج
+              Navigator.of(context, rootNavigator: true).pop();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -65,52 +60,55 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             });
           } else if (state is FailedState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(content: Text(state.message, style: TextStyle(fontSize: 14.sp))),
             );
           }
         },
         builder: (context, state) {
           return Scaffold(
-              backgroundColor: AppColors.whiteColor,
-              body: Stack(children: [
+            backgroundColor: AppColors.whiteColor,
+            body: Stack(
+              children: [
                 Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: 0.5.sh, // تكييف النسبة باستخدام screen height
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
+                        topLeft: Radius.circular(25.r),
+                        topRight: Radius.circular(25.r),
                       ),
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 15,
-                  left: 15,
+                  top: 15.h,
+                  left: 15.w,
                   child: Row(
                     children: [
                       InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()));
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: AppColors.primaryColor,
-                          )),
-                      SizedBox(width: 20),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: AppColors.primaryColor,
+                          size: 24.sp,
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
                       Text(
                         'Forget password',
                         style: TextStyle(
                           color: AppColors.primaryColor,
                           fontFamily: 'IMPRISHA',
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -119,11 +117,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 // اللوجو واسم الجامعة
                 Positioned(
-                  top: 60,
-                  left: 27,
+                  top: 60.h,
+                  left: 27.w,
                   child: Row(
                     children: [
-                      Image.asset("assets/images/logo.png", height: 80),
+                      Image.asset("assets/images/logo.png", height: 80.h),
                       Column(
                         children: [
                           Text(
@@ -131,7 +129,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'ENGR',
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor,
                             ),
@@ -141,7 +139,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'andlso',
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.primaryColor,
                             ),
@@ -151,21 +149,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     ],
                   ),
                 ),
-
-                // نموذج تسجيل الدخول
+                // نموذج إعادة تعيين كلمة المرور
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.10,
-                  left: 20,
-                  right: 20,
+                  bottom: 0.10.sh,
+                  left: 20.w,
+                  right: 20.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                     decoration: BoxDecoration(
                       color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.r),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
-                          blurRadius: 10,
+                          blurRadius: 10.r,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -175,16 +172,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       child: Column(
                         children: [
                           CustomTextFormField(
-                              hint: 'user name',
-                              label: "User Name",
-                              controller: userNameController),
-
+                            hint: 'user name',
+                            label: "User Name",
+                            controller: userNameController,
+                          ),
                           CustomTextFormField(
-                              hint: 'email',
-                              label: "Email",
-                              controller: emailController),
-
-                          // إدخال كلمة المرور
+                            hint: 'email',
+                            label: "Email",
+                            controller: emailController,
+                          ),
                           CustomTextFormField(
                             hint: 'new password',
                             label: "New Password",
@@ -197,16 +193,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             controller: confirmNewPasswordController,
                             isSecure: true,
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                         ],
                       ),
                     ),
                   ),
                 ),
-                // زر تسجيل الدخول
+                // زر إرسال
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.05,
-                  left: MediaQuery.of(context).size.width * 0.4,
+                  bottom: 0.05.sh,
+                  left: 0.4.sw, // تكييف العرض باستخدام screen width
                   child: InkWell(
                     onTap: () {
                       if (formKey.currentState!.validate()) {
@@ -214,16 +210,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           userName: userNameController.text.trim(),
                           email: emailController.text.trim(),
                           newPassword: newPasswordController.text.trim(),
-                          confirmNewPassword:
-                              confirmNewPasswordController.text.trim(),
+                          confirmNewPassword: confirmNewPasswordController.text.trim(),
                         );
                       }
                     },
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(50.r),
                     child: CustomArrow(),
                   ),
                 ),
-              ]));
+              ],
+            ),
+          );
         },
       ),
     );

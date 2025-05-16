@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:gradproject/Home/home_screen.dart';
 import 'package:gradproject/auth/forget_password/forget_password_screen.dart';
@@ -25,20 +26,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
-        routes: {
-          SplashScreen.RouteName: (context) => const SplashScreen(),
-          GlobalPassword.RouteName: (context) =>  GlobalPassword(),
-          RegisterScreen.RouteName: (context) =>  RegisterScreen(),
-          LoginScreen.RouteName: (context) =>  LoginScreen(),
-          ForgetPasswordScreen.RouteName: (context) => ForgetPasswordScreen(),
-          HomeScreen.RouteName: (context) => const HomeScreen(),
-          GpaScreen.RouteName: (context) =>  GpaScreen(),
-          SendOtp.RouteName: (context) => SendOtp(),
-          VerificationAccount.RouteName: (context) =>  VerificationAccount(),
-        },
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690), // حجم التصميم الأساسي (مثل Figma)
+        minTextAdapt: true, // تكييف حجم النصوص تلقائيًا
+        splitScreenMode: true,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: const SplashScreen(),
+          routes: {
+            SplashScreen.RouteName: (context) => const SplashScreen(),
+            GlobalPassword.RouteName: (context) => GlobalPassword(),
+            RegisterScreen.RouteName: (context) => RegisterScreen(),
+            LoginScreen.RouteName: (context) => LoginScreen(),
+            ForgetPasswordScreen.RouteName: (context) => ForgetPasswordScreen(),
+            HomeScreen.RouteName: (context) => const HomeScreen(),
+            GpaScreen.RouteName: (context) => GpaScreen(),
+            SendOtp.RouteName: (context) => SendOtp(),
+            VerificationAccount.RouteName: (context) => VerificationAccount(),
+          },
+        ),
       ),
     );
   }
