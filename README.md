@@ -160,11 +160,10 @@ To build and run the app from source, follow these steps:
 
 Ensure you have Flutter SDK installed (version 3.13 or above is recommended).  
 Then run the following command in the root directory of the project:
+    ```bash
+    flutter pub get
 
-```bash
-flutter pub get
-
- This project uses the following packages:
+This project uses the following packages:
 
 shared_preferences – Local data storage
 
