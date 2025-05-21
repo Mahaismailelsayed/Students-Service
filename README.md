@@ -156,6 +156,46 @@ To build and run the app from source, follow these steps:
 
 ## ⚙️ Configuration Steps
 
+### 1. 📦 Install Dependencies
+
+Ensure you have Flutter SDK installed (version 3.13 or above is recommended).  
+Then run the following command in the root directory of the project:
+
+```bash
+flutter pub get
+
+ This project uses the following packages:
+
+shared_preferences – Local data storage
+
+http – For sending API requests
+
+get – State management and navigation
+
+connectivity_plus – Network connectivity check
+
+flutter_local_notifications – Displaying local notifications
+
+workmanager – Background tasks
+
+flutter_screenutil – Responsive layout
+
+webview_flutter – Embedded web views
+
+url_launcher – Launching URLs
+
+path_provider – Accessing device directories
+
+timezone – Handling time zones
+
+platform – Platform detection
+
+splashify – Custom splash screen
+
+shelf – Lightweight server and middleware (optional)
+
+
+   
 
 
 ---
