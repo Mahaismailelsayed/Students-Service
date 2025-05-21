@@ -11,16 +11,31 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
 
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token == null) {
+      return false;
+    }
+    else {
+      print("$token");
+      return true;
+
+    }
+
+  }
+
   Future<void> Logout(BuildContext context) async {
     emit(LoadingState());
 
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      print("🔑token:$token");
+      print("🔑 token: $token");
 
       if (token == null) {
         print("Token is null");
+        emit(FailedState(message: "لا يوجد توكن لتسجيل الخروج"));
         return;
       }
 
@@ -37,26 +52,27 @@ class AuthCubit extends Cubit<AuthState> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['isSuccess'] == true) {
-          debugPrint("Response is : $data");
+          debugPrint("Response is: $data");
           emit(SuccessState());
+          // مسح التوكن وحالة اللوج إن
           await prefs.remove('token');
+          await prefs.setBool('hasLoggedIn', false); // إضافة هذه السطر
           Navigator.of(context).pushReplacementNamed('login_screen');
         } else {
           emit(FailedState(
-            message: data['message'] ?? "حدث خطأ اثناء تسجيل الخروج",
+            message: data['message'] ?? "حدث خطأ أثناء تسجيل الخروج",
           ));
           debugPrint("📌 Full Response: ${response.body}");
         }
+      } else {
+        emit(FailedState(message: "فشل الاتصال بالسيرفر"));
+        debugPrint("📌 Full Response: ${response.body}");
       }
     } catch (e) {
-      debugPrint("🔥 Failed to Register: $e");
-
-      if (e is http.Response) {
-        debugPrint("📌 Server Response: ${e.body}");
-      }
+      debugPrint("🔥 Failed to Logout: $e");
+      emit(FailedState(message: "حدث خطأ غير متوقع: $e"));
     }
   }
-
   //Global Pass http
   Future<void> globalPass({required String Password}) async {
     // Emit loading state

@@ -85,7 +85,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                 ),
                 Positioned(
-                  top: 15.h,
+                  top: 25.h,
                   left: 15.w,
                   child: Row(
                     children: [
@@ -117,7 +117,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 // اللوجو واسم الجامعة
                 Positioned(
-                  top: 60.h,
+                  top: 85.h,
                   left: 27.w,
                   child: Row(
                     children: [

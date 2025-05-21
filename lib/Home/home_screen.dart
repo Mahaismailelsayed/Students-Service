@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         final data = jsonDecode(response.body);
         print("🔍 fetchStudentInfo called");
 
-          setState(() {
+        setState(() {
           userName = data['userName'] ?? 'No user name'; // تأكد من القيمة
           gpa = (data['gpa'] ?? 0.0).toDouble();
           print("🎓 GPA: $gpa");
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     title: Text('Profile',
                         style: TextStyle(color: Color(0xFFB7935F))),
-                    onTap: () => Navigator.pushReplacement(
+                    onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BlocProvider(
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => HomeScreen(
@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Color(0xFFB7935F),
                         ),
                       ),
-                      onTap: () => Navigator.pushReplacement(
+                      onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DrawerLinksCustom(
@@ -213,13 +213,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Color(0xFFB7935F),
                         ),
                       ),
-                      onTap: () => Navigator.pushReplacement(
+                      onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DrawerLinksCustom(
                                   screenTitle: 'ASU2Learn',
                                   url:
-                                  'https://asu2learn.asu.edu.eg/sciencePG/')))),
+                                      'https://asu2learn.asu.edu.eg/sciencePG/')))),
                   ListTile(
                       leading: Icon(
                         Icons.account_circle_outlined,
@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text('UMS account',
                           style: TextStyle(color: Color(0xFFB7935F))),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
@@ -243,12 +243,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       title: Text('Complaints',
                           style: TextStyle(color: Color(0xFFB7935F))),
-                      onTap: () => Navigator.pushReplacement(
+                      onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DrawerLinksCustom(
                                   screenTitle: 'Complaints',
-                                  url: 'https://forms.office.com/pages/responsepage.aspx?id=ZVH5axNBiEGbe8tsDBmKW-cPAmuMx6dNvjiN17RIMfRUMkRPR0xUMldPOEcwQUNFN1lKUEZLNk9XMy4u&route=shorturl')))),
+                                  url:
+                                      'https://forms.office.com/pages/responsepage.aspx?id=ZVH5axNBiEGbe8tsDBmKW-cPAmuMx6dNvjiN17RIMfRUMkRPR0xUMldPOEcwQUNFN1lKUEZLNk9XMy4u&route=shorturl')))),
                   ListTile(
                       leading: Icon(
                         Icons.facebook_sharp,
@@ -257,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text('Facebook',
                           style: TextStyle(color: Color(0xFFB7935F))),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
@@ -276,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Color(0xFFB7935F),
                         ),
                       ),
-                      onTap: () => Navigator.pushReplacement(
+                      onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => DrawerLinksCustom(
@@ -290,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text('Notifications',
                           style: TextStyle(color: Color(0xFFB7935F))),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
@@ -310,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
@@ -319,7 +320,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-
                   ListTile(
                     leading: Icon(
                       Icons.notes,
@@ -332,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text('News',
                           style: TextStyle(color: Color(0xFFB7935F))),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
@@ -381,15 +381,17 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               actions: [
                 Padding(
-                  padding:  EdgeInsets.only(right: 10.0.w), // Add some padding to the right
+                  padding: EdgeInsets.only(
+                      right: 10.0.w), // Add some padding to the right
                   child: CircleAvatar(
                     radius: 18.r, // Adjust the size of the photo
-                    backgroundImage: AssetImage('assets/images/logo.png'), // Replace with your image path
+                    backgroundImage: AssetImage(
+                        'assets/images/logo.png'), // Replace with your image path
                   ),
                 ),
               ],
               backgroundColor: Color(0xff143109),
-              title:  Column(
+              title: Column(
                 children: [
                   Text(
                     'Faculty Of Science ASU',
@@ -413,7 +415,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   false, // Prevents Flutter from adding default back button
               leading: Builder(
                 builder: (context) => IconButton(
-                  icon: Icon(Icons.menu, color: Colors.white,size: 25.r,),
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 25.r,
+                  ),
                   onPressed: () {
                     Scaffold.of(context).openDrawer(); // Opens the drawer
                   },

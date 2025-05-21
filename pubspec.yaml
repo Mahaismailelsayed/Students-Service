@@ -30,9 +30,6 @@ environment:
 dependencies:
   html: ^0.15.0
   flutter_local_notifications: ^17.2.2
-  workmanager: ^0.5.2
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   path_provider: ^2.1.1
   shelf: ^1.4.0
 

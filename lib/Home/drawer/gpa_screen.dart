@@ -203,6 +203,7 @@ class _GpaScreenState extends State<GpaScreen> {
             await prefs.setDouble('$userName-savedCreditHours', totalAllCredits);
 
             await _updateGpa(cumulativeGpa);
+
             await _refreshGpaData(); // Refresh FutureBuilder data
           },
         );

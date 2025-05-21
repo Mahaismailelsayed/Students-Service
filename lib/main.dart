@@ -32,14 +32,14 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+          initialRoute: SplashScreen.RouteName,
           routes: {
-            SplashScreen.RouteName: (context) => const SplashScreen(),
+            SplashScreen.RouteName: (context) =>  SplashScreen(),
             GlobalPassword.RouteName: (context) => GlobalPassword(),
             RegisterScreen.RouteName: (context) => RegisterScreen(),
             LoginScreen.RouteName: (context) => LoginScreen(),
             ForgetPasswordScreen.RouteName: (context) => ForgetPasswordScreen(),
-            HomeScreen.RouteName: (context) => const HomeScreen(),
+            HomeScreen.RouteName: (context) =>  HomeScreen(),
             GpaScreen.RouteName: (context) => GpaScreen(),
             SendOtp.RouteName: (context) => SendOtp(),
             VerificationAccount.RouteName: (context) => VerificationAccount(),

@@ -65,7 +65,7 @@ class _GlobalPasswordState extends State<GlobalPassword> {
 
                 // Top Section (White with Logo & Text)
                 Positioned(
-                  top: 60.h,
+                  top: 85.h,
                   left: 27.w,
                   child: Row(
                     children: [

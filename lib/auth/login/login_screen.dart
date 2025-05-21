@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // اللوجو واسم الجامعة
                 Positioned(
-                  top: 60.h,
+                  top: 85.h,
                   left: 27.w,
                   child: Row(
                     children: [
@@ -156,8 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // زر تسجيل الدخول
                 Positioned(
-                  bottom: 0.23.sh,
-                  left: 0.4.sw,
+                  bottom: 0.24.sh,
+                  left: 0.42.sw,
                   child: InkWell(
                     onTap: () {
                       if (formKey.currentState?.validate() ?? false) {
