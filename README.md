@@ -183,66 +183,33 @@ This command will install all the required packages listed in `pubspec.yaml` so 
 
 ---
 
+
 ### 2. 🌐 API Configuration
 
-The app connects to a backend server using these main API endpoints:
+The app connects to a backend server using the following main API endpoints:
 
-- **Global Password Verification** –
- `POST /api/Account/CheckPassword?Password=W%4012qsx%24%25233`  
-  Used to verify the initial password provided by the IT department before registering.
-  
-- **Register** –
- `POST /api/Account/Register`  
-  Used to create a new student account.
-  
-- **Login** –
- `POST /api/Account/Login`  
-  Used to log in a student.
+| Function                     | Method | Endpoint |
+|-----------------------------|--------|----------|
+| Global Password Verification | POST   | `/api/Account/CheckPassword?Password=W%4012qsx%24%25233` |
+| Register                    | POST   | `/api/Account/Register` |
+| Login                       | POST   | `/api/Account/Login` |
+| Forget Password             | POST   | `/api/Account/ForgetPassword` |
+| Send OTP                    | GET    | `/api/Account/SendOtp?Email=$email` |
+| Validate OTP                | GET    | `/api/Account/ValidateOtp?Email=$email&otp=$otp` |
+| Reset Password              | POST   | `/api/Account/ResetPassword` |
+| Logout                      | POST   | `/api/Account/Logout` |
+| Calculate GPA               | POST   | `/api/Gpa/calculateGPA` |
+| Get Student Name & GPA      | GET    | `/api/Account/GetStudentInfo` |
+| Get Detailed Student Info   | GET    | `/api/Gpa/student-info` |
+| Update GPA                  | PUT    | `/api/Gpa/update` |
 
-- **Forget Password** –
- `POST /api/Account/ForgetPassword`  
-  Used to send a password reset link or code.
+> Make sure your API requests use the correct HTTP methods and pass required authentication tokens if needed.
 
-- **Send OTP** –  
-  `GET /api/Account/SendOtp?Email=$email`  
-  Sends a One-Time Password (OTP) to the student's registered email.
-
-- **Validate OTP** –  
-  `GET /api/Account/ValidateOtp?Email=$email&otp=$otp`  
-  Validates the OTP entered by the student for verification.
-
-- **Change Password** –  
-  `POST /api/Account/ResetPassword`  
-  Used to change the student’s password .
-
-- **Logout**  
-  `POST /api/Account/Logout`  
-  Ends the user session and clears stored tokens.
-
-- **GPA Calculate** –
- `POST /api/Gpa/calculateGPA`  
-  Used to calculate GPA based on the entered courses.
-
-- **Get Student name and gpa** -
-  `GET /api/Account/GetStudentInfo`  
-  Retrieves username and gpa about the student.
-
-- **Get Student Info** -
-  `GET /api/Gpa/student-info`
-  Retrieves detailed information about the student.
-
-- **Update GPA**  -
-  `PUT /api/Gpa/update`  
-  Endpoint to update student GPA information.
-
-
-Make sure your API requests use the correct HTTP methods and pass required authentication tokens if needed.
-  
-Base URL:
-
+**Base URL:**
 ```
 http://gpa.runasp.net/api/
 ```
+
 
 ### 3. 🔐 Permissions
 
@@ -271,6 +238,11 @@ ScreenUtilInit(
   builder: (context, child) => MyApp(),
 );
 ```
+---
+### 5. 🔔 Local Notifications 
+
+- Initialize `flutter_local_notifications` and `timezone` in `main.dart`.
+
 ---
 
 ### 6. 🚀 Run the App
