@@ -1,4 +1,4 @@
-# 🎓 Students Service App – Faculty of Science.
+# 📱 Students Service App – Faculty of Science.
 
 ---
 
