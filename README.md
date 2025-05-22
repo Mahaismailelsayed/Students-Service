@@ -160,43 +160,138 @@ To build and run the app from source, follow these steps:
 
 Ensure you have Flutter SDK installed (version 3.13 or above is recommended).  
 Then run the following command in the root directory of the project:
-    ```bash
-    flutter pub get
 
-This project uses the following packages:
+```bash
+flutter pub get
+```
+ake sure you have Flutter installed on your machine.  
+You can download and install Flutter from the official site: [https://flutter.dev](https://flutter.dev)
 
-shared_preferences – Local data storage
+To verify Flutter is properly installed, run:
 
-http – For sending API requests
+```bash
+flutter --version
+```
 
-get – State management and navigation
+Once Flutter is set up and you have cloned this project, navigate to the root folder of the app and run:
 
-connectivity_plus – Network connectivity check
+```bash
+flutter pub get
+```
 
-flutter_local_notifications – Displaying local notifications
+This command will install all the required packages listed in `pubspec.yaml` so the app can run correctly.
 
-workmanager – Background tasks
+---
 
-flutter_screenutil – Responsive layout
+### 2. 🌐 API Configuration
 
-webview_flutter – Embedded web views
+The app connects to a backend server using these main API endpoints:
 
-url_launcher – Launching URLs
+- **Global Password Verification** –
+ `POST /api/Account/CheckPassword?Password=W%4012qsx%24%25233`  
+  Used to verify the initial password provided by the IT department before registering.
+  
+- **Register** –
+ `POST /api/Account/Register`  
+  Used to create a new student account.
+  
+- **Login** –
+ `POST /api/Account/Login`  
+  Used to log in a student.
 
-path_provider – Accessing device directories
+- **Forget Password** –
+ `POST /api/Account/ForgetPassword`  
+  Used to send a password reset link or code.
 
-timezone – Handling time zones
+- **Send OTP** –  
+  `GET /api/Account/SendOtp?Email=$email`  
+  Sends a One-Time Password (OTP) to the student's registered email.
 
-platform – Platform detection
+- **Validate OTP** –  
+  `GET /api/Account/ValidateOtp?Email=$email&otp=$otp`  
+  Validates the OTP entered by the student for verification.
 
-splashify – Custom splash screen
+- **Change Password** –  
+  `POST /api/Account/ResetPassword`  
+  Used to change the student’s password .
 
-shelf – Lightweight server and middleware (optional)
+- **Logout**  
+  `POST /api/Account/Logout`  
+  Ends the user session and clears stored tokens.
+
+- **GPA Calculate** –
+ `POST /api/Gpa/calculateGPA`  
+  Used to calculate GPA based on the entered courses.
+
+- **Get Student name and gpa** -
+  `GET /api/Account/GetStudentInfo`  
+  Retrieves username and gpa about the student.
+
+- **Get Student Info** -
+  `GET /api/Gpa/student-info`
+  Retrieves detailed information about the student.
+
+- **Update GPA**  -
+  `PUT /api/Gpa/update`  
+  Endpoint to update student GPA information.
 
 
-   
+Make sure your API requests use the correct HTTP methods and pass required authentication tokens if needed.
+  
+Base URL:
 
+```
+http://gpa.runasp.net/api/
+```
 
+### 3. 🔐 Permissions
+
+#### Android (`android/app/src/main/AndroidManifest.xml`):
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+```
+
+#### iOS (`ios/Runner/Info.plist`):
+
+Make sure you add permissions for internet and notifications.
+
+---
+
+### 4. 🖥️ Responsive Layout
+
+The app uses `flutter_screenutil` to support responsive UI across devices.
+
+In `main.dart`, wrap your app with:
+
+```dart
+ScreenUtilInit(
+  designSize: Size(360, 690),
+  builder: (context, child) => MyApp(),
+);
+```
+---
+
+### 6. 🚀 Run the App
+
+To launch the app:
+
+```bash
+flutter run
+```
+
+Ensure a device or emulator is connected.
+
+---
+
+### 7. 🧼 Optional: Splash Screen Setup
+
+To generate the splash screen using Splashify:
+
+```bash
+flutter pub run splashify:create
+```
 ---
 
 ## 🛠️ Troubleshooting Tips
