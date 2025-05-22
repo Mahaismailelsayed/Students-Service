@@ -264,6 +264,18 @@ To generate the splash screen using Splashify:
 ```bash
 flutter pub run splashify:create
 ```
+### 8. 📂 Local Storage with SharedPreferences
+
+The app uses the shared_preferences package to store essential user data locally on the device.
+
+This includes:
+
+Authentication tokens
+
+User login status
+
+Email address
+
 ---
 
 ## 🛠️ Troubleshooting Tips
