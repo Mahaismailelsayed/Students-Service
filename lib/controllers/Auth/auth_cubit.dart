@@ -222,9 +222,18 @@ class AuthCubit extends Cubit<AuthState> {
             prefs.setString(
                 'email', data['email']); // أو أي حقل يمثل اسم المستخدم
           }
-        } else {
+        }
+        else {
+          final String errorMessage = data['message'] ?? 'حدث خطأ ما';
+
+          // ✅ تحقق مما إذا كانت الرسالة تشير إلى وجود البريد الإلكتروني
+          if (errorMessage.contains('email') && errorMessage.contains('already')) {
+            emit(FailedState(message: "البريد الإلكتروني مستخدم بالفعل"));
+          } else {
+            emit(FailedState(message: errorMessage));
+          }
+
           debugPrint("📌 Full Response: ${response.body}");
-          emit(FailedState(message: data['message']));
         }
       }
     } catch (e) {

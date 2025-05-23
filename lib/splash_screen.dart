@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget {
         imageSize: 200,
         heightBetween: 20,
         glowIntensity: 20,
-        navigateDuration: 5,
+        navigateDuration: 3,
         colorizeTitleAnimation: true,
         colorizeTileAnimationColors: [
           Colors.white,

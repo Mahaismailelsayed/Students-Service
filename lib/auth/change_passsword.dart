@@ -22,6 +22,26 @@ class _ChangePassswordState extends State<ChangePasssword> {
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    userNameController.dispose();
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToField() {
+    if (formKey.currentState != null) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +82,7 @@ class _ChangePassswordState extends State<ChangePasssword> {
         },
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false, // Prevent resizing when keyboard appears
             backgroundColor: AppColors.whiteColor,
             appBar: CustomGradientAppBar(
               title: 'Change Password',
@@ -78,74 +99,91 @@ class _ChangePassswordState extends State<ChangePasssword> {
                 );
               },
             ),
-            body: Stack(
-              children: [
-                Positioned(
-                  bottom: 0.3.sh,
-                  left: 25.w,
-                  right: 35.w,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25.r),
-                        topRight: Radius.circular(25.r),
-                      ),
-                    ),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          CustomTextFormField(
-                            hint: 'UserName',
-                            controller: userNameController,
-                            label: 'UserName',
-                          ),
-                          CustomTextFormField(
-                            hint: 'Old Password',
-                            controller: oldPasswordController,
-                            label: 'Old Password',
-                            isSecure: true,
-                          ),
-                          CustomTextFormField(
-                            hint: 'New Password',
-                            controller: newPasswordController,
-                            label: 'New Password',
-                            isSecure: true,
-                          ),
-                          SizedBox(height: 10.h),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryColor,
-                              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              minimumSize: Size(double.infinity, 40.h),
-                            ),
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                BlocProvider.of<AuthCubit>(context).ChangePass(
-                                  userName: userNameController.text.trim(),
-                                  oldPassword: oldPasswordController.text.trim(),
-                                  newPassword: newPasswordController.text.trim(),
-                                );
-                              }
-                            },
-                            child: Text(
-                              "Change",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.sp,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20.h, // Enhanced keyboard padding
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height, // Define Stack height
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 0.46.sh,
+                          left: 25.w,
+                          right: 35.w,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25.r),
+                                topRight: Radius.circular(25.r),
                               ),
                             ),
+                            child: Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  CustomTextFormField(
+                                    hint: 'UserName',
+                                    controller: userNameController,
+                                    label: 'UserName',
+                                    // Scroll when focused
+                                  ),
+                                  CustomTextFormField(
+                                    hint: 'Old Password',
+                                    controller: oldPasswordController,
+                                    label: 'Old Password',
+                                    isSecure: true,
+
+                                  ),
+                                  CustomTextFormField(
+                                    hint: 'New Password',
+                                    controller: newPasswordController,
+                                    label: 'New Password',
+                                    isSecure: true,
+
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryColor,
+                                      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                      minimumSize: Size(double.infinity, 40.h),
+                                    ),
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        BlocProvider.of<AuthCubit>(context).ChangePass(
+                                          userName: userNameController.text.trim(),
+                                          oldPassword: oldPasswordController.text.trim(),
+                                          newPassword: newPasswordController.text.trim(),
+                                        );
+                                      }
+                                    },
+                                    child: Text(
+                                      "Change",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           );
         },

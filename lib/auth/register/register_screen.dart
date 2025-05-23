@@ -191,6 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hint: 'NID',
                               label: "NID",
                               controller: idController,
+                              keyboardType: TextInputType.number,
                             ),
                             SizedBox(height: 10.h),
                             ElevatedButton(

@@ -44,84 +44,73 @@ class _SendOtpState extends State<SendOtp> {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: AppColors.whiteColor,
-            body: Stack(
-              children: [
-                Positioned(
-                  top: 45.h,
-                  left: 8.w,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.primaryColor,
-                      size: 30.sp,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0.87.sh,
-                  left: 55.w,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Form(
+                  key: formKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Find your account",
-                        style: TextStyle(
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
                           color: AppColors.primaryColor,
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w700,
+                          size: 30.sp,
+                        ),
+                      ),
+                      SizedBox(height: 50.h),
+                      Center(
+                        child: Text(
+                          "Find your account",
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 50.h),
+                      CustomTextFormField(
+                        hint: 'Email',
+                        label: 'Enter your email',
+                        controller: emailController,
+                      ),
+                      SizedBox(height: 20.h),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 20.w),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.r),
+                          ),
+                          minimumSize: Size(double.infinity, 40.h),
+                        ),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            BlocProvider.of<AuthCubit>(context).Sendotp(
+                              Email: emailController.text,
+                            );
+                          }
+                        },
+                        child: Text(
+                          "Continue",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17.sp,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: 0.6.sh,
-                  left: 20.w,
-                  right: 20.w,
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        CustomTextFormField(
-                          hint: 'Email',
-                          label: 'Enter your email',
-                          controller: emailController,
-                        ),
-                        SizedBox(height: 10.h),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryColor,
-                            padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 20.w),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.r),
-                            ),
-                            minimumSize: Size(double.infinity, 40.h),
-                          ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(context).Sendotp(
-                                Email: emailController.text,
-                              );
-                            }
-                          },
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         },

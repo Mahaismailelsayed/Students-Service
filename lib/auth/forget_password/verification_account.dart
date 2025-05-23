@@ -11,6 +11,8 @@ import '../../widgets/custom_text_form_field.dart';
 class VerificationAccount extends StatefulWidget {
   static const String RouteName = 'verification_acc';
 
+  const VerificationAccount({super.key});
+
   @override
   State<VerificationAccount> createState() => _VerificationAccountState();
 }
@@ -18,6 +20,24 @@ class VerificationAccount extends StatefulWidget {
 class _VerificationAccountState extends State<VerificationAccount> {
   final otpController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    otpController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToField() {
+    if (formKey.currentState != null) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,109 +64,126 @@ class _VerificationAccountState extends State<VerificationAccount> {
         },
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false, // Prevent resizing when keyboard appears
             backgroundColor: AppColors.whiteColor,
-            body: Stack(
-              children: [
-                Positioned(
-                  top: 45.h,
-                  left: 8.w,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SendOtp()),
-                      );
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.primaryColor,
-                      size: 30.sp,
-                    ),
-                  ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20.h, // Adjust for keyboard
                 ),
-                Positioned(
-                  bottom: 0.79.sh,
-                  left: 18.w,
-                  child: Column(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height, // Define Stack height
+                  child: Stack(
                     children: [
-                      Text(
-                        "OTP code verification",
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w700,
+                      // Back Arrow
+                      Positioned(
+                        top: 45.h,
+                        left: 8.w,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SendOtp()),
+                            );
+                          },
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: AppColors.primaryColor,
+                            size: 30.sp,
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10.h),
-                      Text(
-                        'We sent an OTP code to your email. Enter that\n code to confirm your account',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400,
+                      // OTP Title and Description
+                      Positioned(
+                        bottom: 0.75.sh,
+                        left: 20.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "OTP code verification",
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontSize: 28.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+                            Text(
+                              'We sent an OTP code to your email. Enter that\n code to confirm your account',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Form
+                      Positioned(
+                        bottom: 0.58.sh,
+                        left: 20.w,
+                        right: 20.w,
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              CustomTextFormField(
+                                hint: 'Enter OTP',
+                                controller: otpController,
+
+                              ),
+                              SizedBox(height: 10.h),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 20.w),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.r),
+                                  ),
+                                  minimumSize: Size(double.infinity, 40.h),
+                                ),
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    String? email = prefs.getString('email');
+
+                                    if (email == null || email.isEmpty) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'لم يتم العثور على البريد الإلكتروني',
+                                            style: TextStyle(fontSize: 14.sp),
+                                          ),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    BlocProvider.of<AuthCubit>(context).Validateotp(
+                                      otp: otpController.text,
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  "Continue",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17.sp,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: 0.58.sh,
-                  left: 20.w,
-                  right: 20.w,
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        CustomTextFormField(
-                          hint: 'Enter OTP',
-                          controller: otpController,
-                        ),
-                        SizedBox(height: 10.h),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryColor,
-                            padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 20.w),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.r),
-                            ),
-                            minimumSize: Size(double.infinity, 40.h),
-                          ),
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              String? email = prefs.getString('email');
-
-                              if (email == null || email.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'لم يتم العثور على البريد الإلكتروني',
-                                      style: TextStyle(fontSize: 14.sp),
-                                    ),
-                                  ),
-                                );
-                                return;
-                              }
-
-                              BlocProvider.of<AuthCubit>(context).Validateotp(
-                                otp: otpController.text,
-                              );
-                            }
-                          },
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17.sp,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         },
