@@ -190,18 +190,18 @@ The app connects to a backend server using the following main API endpoints:
 
 | Function                     | Method | Endpoint |
 |-----------------------------|--------|----------|
-| Global Password Verification | POST   | `[/api/Account/CheckPassword?Password=W%4012qsx%24%25233](http://gpa.runasp.net/api/Account/CheckPassword?Password=W%4012qsx%24%25233)` |
-| Register                    | POST   | `[/api/Account/Register](http://gpa.runasp.net/api/Account/Register)` |
-| Login                       | POST   | `[/api/Account/Login](http://gpa.runasp.net/api/Account/Login)` |
-| Forget Password             | POST   | `[/api/Account/ForgetPassword](http://gpa.runasp.net/api/Account/ForgetPassword)` |
-| Send OTP                    | GET    | `[/api/Account/SendOtp?Email=$email](http://gpa.runasp.net/api/Account/SendOtp?Email=$email)` |
-| Validate OTP                | GET    | `[/api/Account/ValidateOtp?Email=$email&otp=$otp](http://gpa.runasp.net/api/Account/ValidateOtp?Email=$email&otp=$otp)` |
-| Reset Password              | POST   | `[/api/Account/ResetPassword](http://gpa.runasp.net/api/Account/ResetPassword)` |
-| Logout                      | POST   | `[/api/Account/Logout](http://gpa.runasp.net/api/Account/Logout)` |
-| Calculate GPA               | POST   | `[/api/Gpa/calculateGPA](http://gpa.runasp.net/api/Gpa/calculateGPA)` |
-| Get Student Name & GPA      | GET    | `[/api/Account/GetStudentInfo](http://gpa.runasp.net/api/Account/GetStudentInfo)` |
-| Get Detailed Student Info   | GET    | `[/api/Gpa/student-info](http://gpa.runasp.net/api/Gpa/student-info)` |
-| Update GPA                  | PUT    | `[/api/Gpa/update](http://gpa.runasp.net/api/Gpa/update)` |
+| Global Password Verification | POST   | `/api/Account/CheckPassword?Password=W%4012qsx%24%25233` |
+| Register                    | POST   | `/api/Account/Register` |
+| Login                       | POST   | `/api/Account/Login` |
+| Forget Password             | POST   | `/api/Account/ForgetPassword` |
+| Send OTP                    | GET    | `/api/Account/SendOtp?Email=$email` |
+| Validate OTP                | GET    | `/api/Account/ValidateOtp?Email=$email&otp=$otp` |
+| Reset Password              | POST   | `/api/Account/ResetPassword` |
+| Logout                      | POST   | `/api/Account/Logout` |
+| Calculate GPA               | POST   | `/api/Gpa/calculateGPA` |
+| Get Student Name & GPA      | GET    | `/api/Account/GetStudentInfo` |
+| Get Detailed Student Info   | GET    | `/api/Gpa/student-info` |
+| Update GPA                  | PUT    | `/api/Gpa/update` |
 
 > Make sure your API requests use the correct HTTP methods and pass required authentication tokens if needed.
 
