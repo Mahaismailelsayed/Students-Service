@@ -82,13 +82,8 @@ class GpaCubit extends Cubit<GpaState> {
 
     emit(GpaLoading());
 
-    if (!validateCourseInputs(courses, [
-      'A+', 'A', 'A-',
-      'B+', 'B', 'B-',
-      'C+', 'C', 'C-',
-      'D+', 'D', 'D-',
-      'F'
-    ])) return;
+    if (!validateCourseInputs(courses, ['A', 'A-', 'B+', 'B', 'C+', 'C', 'D', 'F']))
+      return;
 
     if (courses.isEmpty) {
       emit(GpaError('Please enter at least one valid course.'));

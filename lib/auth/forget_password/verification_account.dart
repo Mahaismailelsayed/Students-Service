@@ -137,6 +137,7 @@ class _VerificationAccountState extends State<VerificationAccount> {
                               CustomTextFormField(
                                 hint: 'Enter OTP',
                                 controller: otpController,
+                                keyboardType: TextInputType.number,
                               ),
                               SizedBox(height: 10.h),
                               ElevatedButton(

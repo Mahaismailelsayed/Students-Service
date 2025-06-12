@@ -15,9 +15,7 @@ class GpaScreen extends StatefulWidget {
 }
 
 class _GpaScreenState extends State<GpaScreen> {
-  final List<String> options = [
-    'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'
-  ];
+  final List<String> options =['A', 'A-', 'B+', 'B', 'C+', 'C', 'D', 'F'];
   List<List<TextEditingController>> _controllers = [];
   TextEditingController _prevHoursController = TextEditingController();
   TextEditingController _prevGpaController = TextEditingController();
