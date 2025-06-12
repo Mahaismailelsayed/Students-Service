@@ -64,16 +64,19 @@ class _VerificationAccountState extends State<VerificationAccount> {
         },
         builder: (context, state) {
           return Scaffold(
-            resizeToAvoidBottomInset: false, // Prevent resizing when keyboard appears
+            resizeToAvoidBottomInset:
+                false, // Prevent resizing when keyboard appears
             backgroundColor: AppColors.whiteColor,
             body: SafeArea(
               child: SingleChildScrollView(
                 controller: _scrollController,
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 20.h, // Adjust for keyboard
+                  bottom: MediaQuery.of(context).viewInsets.bottom +
+                      20.h, // Adjust for keyboard
                 ),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height, // Define Stack height
+                  height:
+                      MediaQuery.of(context).size.height, // Define Stack height
                   child: Stack(
                     children: [
                       // Back Arrow
@@ -84,7 +87,8 @@ class _VerificationAccountState extends State<VerificationAccount> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SendOtp()),
+                              MaterialPageRoute(
+                                  builder: (context) => SendOtp()),
                             );
                           },
                           child: Icon(
@@ -123,7 +127,7 @@ class _VerificationAccountState extends State<VerificationAccount> {
                       ),
                       // Form
                       Positioned(
-                        bottom: 0.58.sh,
+                        bottom: 0.50.sh,
                         left: 20.w,
                         right: 20.w,
                         child: Form(
@@ -133,13 +137,13 @@ class _VerificationAccountState extends State<VerificationAccount> {
                               CustomTextFormField(
                                 hint: 'Enter OTP',
                                 controller: otpController,
-
                               ),
                               SizedBox(height: 10.h),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.primaryColor,
-                                  padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 20.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 7.h, horizontal: 20.w),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.r),
                                   ),
@@ -147,11 +151,13 @@ class _VerificationAccountState extends State<VerificationAccount> {
                                 ),
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
                                     String? email = prefs.getString('email');
 
                                     if (email == null || email.isEmpty) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
                                           content: Text(
                                             'لم يتم العثور على البريد الإلكتروني',
@@ -162,7 +168,8 @@ class _VerificationAccountState extends State<VerificationAccount> {
                                       return;
                                     }
 
-                                    BlocProvider.of<AuthCubit>(context).Validateotp(
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .Validateotp(
                                       otp: otpController.text,
                                     );
                                   }
@@ -175,7 +182,20 @@ class _VerificationAccountState extends State<VerificationAccount> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.h),
+                              SizedBox(height: 2.h),
+                              InkWell(
+                                onTap: () {
+                                  BlocProvider.of<AuthCubit>(context).resendOtp();
+                                  },
+                                child: Text(
+                                  "Resend OTP",
+                                  style: TextStyle(
+                                    color: AppColors.goldColor,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

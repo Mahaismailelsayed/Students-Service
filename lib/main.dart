@@ -9,6 +9,7 @@ import 'package:gradproject/auth/login/login_screen.dart';
 import 'package:gradproject/auth/register/register_screen.dart';
 import 'package:gradproject/auth/forget_password/send_otp.dart';
 import 'package:gradproject/auth/forget_password/verification_account.dart';
+import 'package:gradproject/controllers/gpa_cubit.dart';
 import 'package:gradproject/splash_screen.dart';
 import 'package:gradproject/Home/drawer/gpa_screen.dart';
 
@@ -24,8 +25,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit(),),
+        BlocProvider(create: (context) => GpaCubit(),),
+      ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690), // حجم التصميم الأساسي (مثل Figma)
         minTextAdapt: true, // تكييف حجم النصوص تلقائيًا
@@ -34,12 +38,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: SplashScreen.RouteName,
           routes: {
-            SplashScreen.RouteName: (context) =>  SplashScreen(),
+            SplashScreen.RouteName: (context) => SplashScreen(),
             GlobalPassword.RouteName: (context) => GlobalPassword(),
             RegisterScreen.RouteName: (context) => RegisterScreen(),
             LoginScreen.RouteName: (context) => LoginScreen(),
             ForgetPasswordScreen.RouteName: (context) => ForgetPasswordScreen(),
-            HomeScreen.RouteName: (context) =>  HomeScreen(),
+            HomeScreen.RouteName: (context) => HomeScreen(),
             GpaScreen.RouteName: (context) => GpaScreen(),
             SendOtp.RouteName: (context) => SendOtp(),
             VerificationAccount.RouteName: (context) => VerificationAccount(),

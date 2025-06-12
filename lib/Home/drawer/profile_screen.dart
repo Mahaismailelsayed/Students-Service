@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: TextSpan(
                         children: [
                           const TextSpan(
-                            text: 'Comulative GPA: ',
+                            text: 'Cumulative GPA: ',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/Home/drawer/courses_screen.dart';
 import 'package:gradproject/auth/login/login_screen.dart';
+import 'package:gradproject/controllers/gpa_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:gradproject/Home/tabs/accScreen.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     fetchStudentInfo();
-    selectind = widget.initialTabIndex; // Use the passed index
+    selectind = widget.initialTabIndex;
   }
 
   Future<void> fetchStudentInfo() async {
@@ -77,22 +78,22 @@ class _HomeScreenState extends State<HomeScreen> {
         print("🔍 fetchStudentInfo called");
 
         setState(() {
-          userName = data['userName'] ?? 'No user name'; // تأكد من القيمة
-          gpa = (data['gpa'] ?? 0.0).toDouble();
-          print("🎓 GPA: $gpa");
+          userName = data['userName'] ?? 'No user name';
+          gpa = (data['gpa'] ?? 0.1).toDouble();
+          print("Gpa: $gpa");
           isLoading = false;
         });
       } else {
         print(
-            "⚠️Failed to load student info. Status code: ${response.statusCode}");
+            "⚠️ Failed to load student info. Status code: ${response.statusCode}");
         setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      print("❌ Error details:");
-      print(e.runtimeType); // نوع الخطأ
-      print(e.toString()); // رسالة الخطأ
+      print("Error details:");
+      print(e.runtimeType);
+      print(e.toString());
       if (e is http.ClientException) {
         print("HTTP Client Exception: ${e.message}");
       }
@@ -104,24 +105,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: BlocConsumer<AuthCubit, AuthState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthCubit(),
+        ),
+        BlocProvider(
+          create: (context) => GpaCubit(),
+        ),
+      ],
+      child:BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is SuccessState) {
             print("Navigating to RegisterScreen");
             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
           } else if (state is FailedState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.message)),
+          );
           }
         },
-        builder: (context, state) {
-          return Scaffold(
+        builder: (context, authState) => BlocListener<GpaCubit, GpaState>(
+          listener: (context, gpaState) {
+            if (gpaState is GpaUpdated) {
+              print("GPA updated, refreshing student info");
+              fetchStudentInfo(); // Refresh GPA only after server update
+            }
+          },
+          child: Scaffold(
             drawer: Drawer(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -132,15 +146,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            radius: 30,
+                            radius: 30.r,
                             backgroundImage:
-                                AssetImage("assets/images/logo.png"),
+                            AssetImage('assets/images/logo.png'),
                           ),
                           SizedBox(width: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(userName.isNotEmpty ? userName : 'userName',
+                              Text(
+                                  userName.isNotEmpty ? userName : 'userName',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18)),
                               Text("GPA: ${gpa.toStringAsFixed(2)}",
@@ -181,8 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => HomeScreen(
-                                    initialTabIndex: 1,
-                                  )));
+                                initialTabIndex: 1,
+                              )));
                     },
                   ),
                   ListTile(
@@ -219,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => DrawerLinksCustom(
                                   screenTitle: 'ASU2Learn',
                                   url:
-                                      'https://asu2learn.asu.edu.eg/sciencePG/')))),
+                                  'https://asu2learn.asu.edu.eg/sciencePG/')))),
                   ListTile(
                       leading: Icon(
                         Icons.account_circle_outlined,
@@ -232,7 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
-                                initialTabIndex: 3), // 0 is Facebook tab index
+                                initialTabIndex:
+                                3), // 0 is Facebook tab index
                           ),
                         );
                       }),
@@ -249,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => DrawerLinksCustom(
                                   screenTitle: 'Complaints',
                                   url:
-                                      'https://forms.office.com/pages/responsepage.aspx?id=ZVH5axNBiEGbe8tsDBmKW-cPAmuMx6dNvjiN17RIMfRUMkRPR0xUMldPOEcwQUNFN1lKUEZLNk9XMy4u&route=shorturl')))),
+                                  'https://forms.office.com/pages/responsepage.aspx?id=ZVH5axNBiEGbe8tsDBmKW-cPAmuMx6dNvjiN17RIMfRUMkRPR0xUMldPOEcwQUNFN1lKUEZLNk9XMy4u&route=shorturl')))),
                   ListTile(
                       leading: Icon(
                         Icons.facebook_sharp,
@@ -262,7 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
-                                initialTabIndex: 0), // 0 is Facebook tab index
+                                initialTabIndex:
+                                0), // 0 is Facebook tab index
                           ),
                         );
                       }),
@@ -282,7 +299,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                               builder: (context) => DrawerLinksCustom(
                                   screenTitle: 'Microsoft365',
-                                  url: 'https://login.microsoftonline.com/')))),
+                                  url:
+                                  'https://login.microsoftonline.com/')))),
                   ListTile(
                       leading: Icon(
                         Icons.notifications_active_outlined,
@@ -295,7 +313,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
-                                initialTabIndex: 4), // 0 is Facebook tab index
+                                initialTabIndex:
+                                4), // 0 is Facebook tab index
                           ),
                         );
                       }),
@@ -353,7 +372,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
-                                initialTabIndex: 2), // 0 is Facebook tab index
+                                initialTabIndex:
+                                2), // 0 is Facebook tab index
                           ),
                         );
                       }),
@@ -412,7 +432,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               automaticallyImplyLeading:
-                  false, // Prevents Flutter from adding default back button
+              false, // Prevents Flutter from adding default back button
               leading: Builder(
                 builder: (context) => IconButton(
                   icon: Icon(
@@ -428,7 +448,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: tabs[selectind],
             bottomNavigationBar: Theme(
-              data: Theme.of(context).copyWith(canvasColor: Color(0xff143109)),
+              data:
+              Theme.of(context).copyWith(canvasColor: Color(0xff143109)),
               child: BottomNavigationBar(
                 unselectedItemColor: Colors.white,
                 selectedItemColor: Color(0xFFB7935F),
@@ -457,8 +478,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

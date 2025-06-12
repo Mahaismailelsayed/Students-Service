@@ -23,11 +23,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isSecure = true;
 
-  void _togglePasswordVisibility() {
-    setState(() {
-      isSecure = !isSecure;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +68,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: 0.5.sh, // تكييف النسبة باستخدام screen height
+                  height: 0.5.sh,
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,

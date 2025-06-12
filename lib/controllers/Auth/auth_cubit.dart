@@ -226,7 +226,6 @@ class AuthCubit extends Cubit<AuthState> {
         else {
           final String errorMessage = data['message'] ?? 'حدث خطأ ما';
 
-          // ✅ تحقق مما إذا كانت الرسالة تشير إلى وجود البريد الإلكتروني
           if (errorMessage.contains('email') && errorMessage.contains('already')) {
             emit(FailedState(message: "البريد الإلكتروني مستخدم بالفعل"));
           } else {
@@ -416,6 +415,32 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> resendOtp() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    print('📧 Stored email: $email');
+
+    if (email == null) {
+      print('Email not found in shared preferences.');
+      return;
+    }
+
+    final url = Uri.parse('http://gpa.runasp.net/api/Account/SendOtp?Email=$email');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('OTP resent to $email');
+    } else {
+      print('Failed to resend OTP: ${response.body}');
+      print('Status code: ${response.statusCode}');
+      print('Body: ${response.body}');
+    }
+  }
   //ForgetPass http
   Future<void> ForgetPassword(
       {required String userName,
@@ -429,7 +454,7 @@ class AuthCubit extends Cubit<AuthState> {
         Uri.parse("http://gpa.runasp.net/api/Account/ForgetPassword"),
         headers: {
           "Content-Type":
-              "application/json", // ✅ تأكيد إرسال البيانات بصيغة JSON
+              "application/json",
         },
         body: jsonEncode({
           "userName": userName,
