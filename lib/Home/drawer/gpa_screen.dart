@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/core/app_colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/gpa_cubit.dart';
+import '../../core/gpa_range.dart';
 import '../../core/number_range.dart';
 
 class GpaScreen extends StatefulWidget {
@@ -107,18 +107,72 @@ class _GpaScreenState extends State<GpaScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hintText,
-      {int flex = 1, bool isNumber = false, bool isCredit = false}) {
+  Widget _buildTextField(
+  TextEditingController controller,
+  String hintText, {
+  int flex = 1,
+  bool isNumber = false,
+  bool isNum=false,
+  bool isCredit = false,
+  String? label,
+  }){
+    final labelWidget = label != null
+        ? Padding(
+      padding: EdgeInsets.only(bottom: 5.h),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 14.sp,
+          color: AppColors.primaryColor,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ) : SizedBox.shrink();
     if (isCredit) {
       return Expanded(
         flex: flex,
-        child: NumberInputField(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            labelWidget,
+            NumberInputField(
+              controller: controller,
+              labelText: hintText.isEmpty ? 'Credit' : hintText,
+              decoration: InputDecoration(
+                hintText: hintText.isEmpty ? 'Credit' : hintText,
+                hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.lightGrayColor),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 2.w),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red, width: 2.w),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    if (isNum) {
+      return Expanded(
+        flex: flex,
+        child: GpaInputField(
           controller: controller,
-          labelText: hintText.isEmpty ? 'Credit' : hintText,
+          labelText: hintText,
           decoration: InputDecoration(
-            hintText: hintText.isEmpty ? 'Credit' : hintText,
-            hintStyle:
-            TextStyle(fontSize: 14.sp, color: AppColors.lightGrayColor),
+            labelText: hintText,
+            hintText: 'Enter a number from 1 to 4',
+            hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.lightGrayColor),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
               borderRadius: BorderRadius.circular(10.r),
@@ -139,36 +193,45 @@ class _GpaScreenState extends State<GpaScreen> {
         ),
       );
     }
+
     return Expanded(
       flex: flex,
-      child: TextField(
-        controller: controller,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: TextStyle(fontSize: 14.sp, color: AppColors.primaryColor),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle:
-          TextStyle(fontSize: 14.sp, color: AppColors.lightGrayColor),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
-            borderRadius: BorderRadius.circular(10.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          labelWidget,
+          TextField(
+
+            controller: controller,
+            keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+            style: TextStyle(fontSize: 14.sp, color: AppColors.primaryColor),
+            decoration: InputDecoration(
+              labelText: hintText,
+              hintText: hintText,
+              hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.lightGrayColor),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2.w),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2.w),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red, width: 2.w),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red, width: 2.w),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
+        ],
       ),
     );
   }
+
 
   Widget _buildHeaderBox(String title) {
     return Container(
@@ -309,7 +372,7 @@ class _GpaScreenState extends State<GpaScreen> {
             Scaffold(
               backgroundColor: Colors.transparent,
               body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: state is GpaLoading ? 10.h : 20.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: state is GpaLoading ? 5.h : 15.h),
                 child: ListView(
                   children: [
                     Row(
@@ -326,6 +389,7 @@ class _GpaScreenState extends State<GpaScreen> {
                           'Previous GPA',
                           flex: 1,
                           isNumber: true,
+                          isNum: true,
                         ),
                       ],
                     ),
