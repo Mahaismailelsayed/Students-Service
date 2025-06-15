@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     context
         .read<DataCubit>()
-        .fetchAllData(); // تحميل البيانات أول ما الشاشة تفتح
+        .fetchAllData();
   }
 
   @override
@@ -72,11 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           TextSpan(
-                            text: state.userName, // البيانات من الـ response
+                            text: state.userName,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor, // لون مختلف
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ],
@@ -86,8 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 20,
                     ),
                     Divider(
-                      color: AppColors.goldColor, // لون الخط
-                      thickness: .5, // سمك الخط
+                      color: AppColors.goldColor,
+                      thickness: .5,
                     ),
                     SizedBox(height: 20),
                     RichText(
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           TextSpan(
-                            text: state.email, // البيانات من الـ response
+                            text: state.email,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,

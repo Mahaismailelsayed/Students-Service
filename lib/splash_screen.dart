@@ -71,16 +71,16 @@ class _IntermediateScreenState extends State<IntermediateScreen> {
         route = HomeScreen.RouteName;
       } else {
         print("⛔ Token منتهي أو مش موجود");
-        // احذفي التوكن علشان تضمني البداية من جديد
+
         await prefs.remove('token');
         await prefs.setBool('hasLoggedIn', false);
-        route = RegisterScreen.RouteName; // أو LoginScreen.RouteName لو بتفضليها
+        route = RegisterScreen.RouteName;
       }
     }
 
     if (mounted) {
       Navigator.pushReplacementNamed(context, route);
-      print('🔑 Token في السبلاتش: $token');
+      print('🔑 Token: $token');
     }
   }
 

@@ -59,12 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final token = prefs.getString('token');
 
     if (token == null || token.isEmpty) {
-      // لو مفيش توكن أو فاضي، نروح على شاشة تسجيل الدخول
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacementNamed(context, LoginScreen.RouteName);
       });
     } else {
-      // لو التوكن موجود، نجيب بيانات الطالب
       fetchStudentInfo();
     }
   }

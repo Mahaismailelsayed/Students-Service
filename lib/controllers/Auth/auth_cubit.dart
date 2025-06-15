@@ -318,7 +318,6 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // ✅ التحقق من المفاتيح المطلوبة قبل استخدامها
       if (!data.containsKey('isAuthenticated') ||
           !data.containsKey('message')) {
         print("⚠️ الرد لا يحتوي على المفاتيح المطلوبة!");
@@ -336,10 +335,9 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // ✅ تخزين التوكن وال userName في SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString(
-          'userName', data['userName']); // أو أي حقل يمثل اسم المستخدم
+          'userName', data['userName']);
       await prefs.setString('token', token);
       print("🔐 Token Stored Successfully!");
 
@@ -480,6 +478,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoadingState());
 
     try {
+      final cleaneduserName= userName.replaceAll('', '');
+
       Response response = await http.post(
         Uri.parse("http://gpa.runasp.net/api/Account/ForgetPassword"),
         headers: {
@@ -487,7 +487,7 @@ class AuthCubit extends Cubit<AuthState> {
               "application/json",
         },
         body: jsonEncode({
-          "userName": userName,
+          "userName": cleaneduserName,
           "email": email,
           "newPassword": newPassword,
           "confirmNewPassword": confirmNewPassword,
@@ -519,14 +519,15 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoadingState());
 
     try {
+      final cleaneduserName= userName.replaceAll('', '');
       Response response = await http.post(
         Uri.parse("http://gpa.runasp.net/api/Account/ResetPassword"),
         headers: {
           "Content-Type":
-              "application/json", // ✅ تأكيد إرسال البيانات بصيغة JSON
+              "application/json",
         },
         body: jsonEncode({
-          "userName": userName,
+          "userName":cleaneduserName,
           "oldPassword": oldPassword,
           "newPassword": newPassword,
         }),
@@ -542,6 +543,7 @@ class AuthCubit extends Cubit<AuthState> {
           debugPrint("Response is : $data");
           emit(FailedState(message: data['message']));
         }
+
       }
     } catch (e) {
       debugPrint("Failed to Register , reason : $e");
