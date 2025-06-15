@@ -263,23 +263,36 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //Login http
-  Future<void> Login(
-      {required String userName, required String password}) async {
+  Future<void> Login({
+    required String userName,
+    required String password,
+  }) async {
     emit(LoadingState());
 
     try {
-      // Make API request
+      // ✅ Trim and remove all spaces from inputs
+      final cleanedUserName = userName.replaceAll(' ', ''); // Remove ALL spaces
+      final cleanedPassword = password.replaceAll(' ', ''); // Remove ALL spaces
+
+      // Validate cleaned inputs (optional)
+      if (cleanedUserName.isEmpty || cleanedPassword.isEmpty) {
+        emit(FailedState(message: "اسم المستخدم وكلمة المرور مطلوبان"));
+        return;
+      }
+
+      // Make API request with cleaned data
       final response = await http.post(
         Uri.parse("http://gpa.runasp.net/api/Account/Login"),
         headers: {
           "Content-Type": "application/json",
         },
         body: jsonEncode({
-          "userName": userName,
-          "password": password,
+          "userName": cleanedUserName, // Send cleaned username
+          "password": cleanedPassword, // Send cleaned password
         }),
       );
 
+      // Rest of your existing logic...
       print("Status Code: ${response.statusCode}");
       print("Response Body: ${response.body}");
 
@@ -337,7 +350,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(FailedState(message: "حدث خطأ غير متوقع، حاول مرة أخرى"));
     }
   }
-
   //SendOTP
   Future<void> Sendotp({required String Email}) async {
     // Emit loading state
