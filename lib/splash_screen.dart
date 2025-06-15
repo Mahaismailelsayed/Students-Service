@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradproject/Home/home_screen.dart';
-import 'package:gradproject/auth/forget_password/send_otp.dart';
 import 'package:gradproject/auth/global_password.dart';
-import 'package:gradproject/controllers/Auth/auth_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashify/splashify.dart';
-
 import 'auth/register/register_screen.dart';
+import 'core/token_utils.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String RouteName = 'splashScreen';
@@ -49,31 +46,45 @@ class IntermediateScreen extends StatefulWidget {
 
 class _IntermediateScreenState extends State<IntermediateScreen> {
   @override
-  @override
   void initState() {
     super.initState();
-    // استدعاء _navigate بعد بناء الـ widget
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _navigate(context);
+      _navigate();
     });
   }
 
-  Future<void> _navigate(BuildContext context) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final hasLoggedIn = prefs.getBool('hasLoggedIn') ?? false;
+  Future<void> _navigate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    final token = prefs.getString('token');
+    String route;
 
-      String route = hasLoggedIn ? HomeScreen.RouteName : GlobalPassword.RouteName;
+    if (isFirstTime) {
+      await prefs.setBool('isFirstTime', false);
+      route = GlobalPassword.RouteName;
+    } else {
+      // ✅ تحققي من صلاحية التوكن باستخدام TokenUtils
+      final bool tokenValid = token != null && token.isNotEmpty && !TokenUtils.isTokenExpired(token);
 
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, route);
-      }
-    } catch (e) {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, SendOtp.RouteName);
+      if (tokenValid) {
+        print("✅ Token صالح");
+        route = HomeScreen.RouteName;
+      } else {
+        print("⛔ Token منتهي أو مش موجود");
+        // احذفي التوكن علشان تضمني البداية من جديد
+        await prefs.remove('token');
+        await prefs.setBool('hasLoggedIn', false);
+        route = RegisterScreen.RouteName; // أو LoginScreen.RouteName لو بتفضليها
       }
     }
-  }  @override
+
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, route);
+      print('🔑 Token في السبلاتش: $token');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(child: CircularProgressIndicator()),

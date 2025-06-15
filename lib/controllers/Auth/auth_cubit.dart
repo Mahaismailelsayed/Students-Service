@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/token_utils.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -31,11 +33,12 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      print("🔑 token: $token");
 
-      if (token == null) {
-        print("Token is null");
-        emit(FailedState(message: "لا يوجد توكن لتسجيل الخروج"));
+      if (token == null || TokenUtils.isTokenExpired(token)) {
+        print("⏰ التوكن غير موجود أو منتهي الصلاحية");
+        await prefs.remove('token');
+        await prefs.setBool('hasLoggedIn', false);
+        Navigator.of(context).pushReplacementNamed('login_screen');
         return;
       }
 
@@ -44,10 +47,12 @@ class AuthCubit extends Cubit<AuthState> {
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
       );
       print("🔁 Status code: ${response.statusCode}");
       print("📦 Response body: ${response.body}");
+      print("📦 token being sent: Bearer $token");
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -58,7 +63,9 @@ class AuthCubit extends Cubit<AuthState> {
           await prefs.remove('token');
           await prefs.setBool('hasLoggedIn', false); // إضافة هذه السطر
           Navigator.of(context).pushReplacementNamed('login_screen');
-        } else {
+        }
+
+        else {
           emit(FailedState(
             message: data['message'] ?? "حدث خطأ أثناء تسجيل الخروج",
           ));
@@ -137,25 +144,36 @@ class AuthCubit extends Cubit<AuthState> {
       required String confirmPassword,
       required String NID}) async {
 
-    String? validatePassword(String password) {
-      if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z]).{6,}$').hasMatch(password)) {
-        return "كلمة المرور يجب أن تحتوي على حرف كبير وحرف صغير على الأقل، ويجب ألا تقل عن 6 أحرف";
-      }
-      return null;
-    }
-
     String? validateNID(String nid) {
       if (!RegExp(r'^\d{14}$').hasMatch(nid)) {
         return "الرقم القومي يجب أن يكون 14 رقمًا";
       }
       return null;
     }
-
     String? validatePhone(String phone) {
       if (!RegExp(r'^01[0-9]{9}$').hasMatch(phone)) {
         return "رقم الهاتف يجب أن يكون 11 رقمًا ويبدأ بـ 01";
       }
       return null;
+    }
+    String? validatePassword(String password) {
+      if (password.length < 6) {
+        return "كلمة المرور يجب ألا تقل عن 6 أحرف";
+      }
+
+      if (!RegExp(r'[a-z]').hasMatch(password)) {
+        return "كلمة المرور يجب أن تحتوي على حرف صغير (a-z) على الأقل";
+      }
+
+      if (!RegExp(r'[A-Z]').hasMatch(password)) {
+        return "كلمة المرور يجب أن تحتوي على حرف كبير (A-Z) على الأقل";
+      }
+
+      if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) {
+        return "كلمة المرور يجب أن تحتوي على رمز خاص (!@#...) على الأقل";
+      }
+
+      return null; // Valid password
     }
 
     final passwordError = validatePassword(password);

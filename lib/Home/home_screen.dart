@@ -47,10 +47,26 @@ class _HomeScreenState extends State<HomeScreen> {
   String? errorMessage;
 
   @override
+  @override
   void initState() {
     super.initState();
-    fetchStudentInfo();
+    _checkLoginAndFetchInfo();
     selectind = widget.initialTabIndex;
+  }
+
+  Future<void> _checkLoginAndFetchInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null || token.isEmpty) {
+      // لو مفيش توكن أو فاضي، نروح على شاشة تسجيل الدخول
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, LoginScreen.RouteName);
+      });
+    } else {
+      // لو التوكن موجود، نجيب بيانات الطالب
+      fetchStudentInfo();
+    }
   }
 
   Future<void> fetchStudentInfo() async {

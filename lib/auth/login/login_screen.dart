@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradproject/auth/forget_password/send_otp.dart';
+import 'package:gradproject/auth/register/register_screen.dart';
 import 'package:gradproject/core/app_colors.dart';
 import 'package:gradproject/widgets/custom_arrow.dart';
 import 'package:gradproject/widgets/custom_text_form_field.dart';
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   SizedBox(height: 15.h),
                                   CustomTextFormField(
-                                    hint: 'username',
+                                    hint: 'Enter your first and last name',
                                     label: 'User Name',
                                     controller: userNameController,
                                     keyboardType: TextInputType.text,
@@ -186,34 +187,63 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         // Forget Password
                         Positioned(
-                          bottom: 0.19.sh,
-                          left: 0.04.sw,
-                          child: Row(
+                          bottom: 0.15.sh,
+                          left: 0.2.sw,
+                          child: Column(
                             children: [
-                              Text(
-                                'Forget Your Password?',
-                                style: TextStyle(
-                                  color: AppColors.whiteColor,
-                                  fontSize: 15.sp,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Forget Your Password?',
+                                    style: TextStyle(
+                                      color: AppColors.whiteColor,
+                                      fontSize: 15.sp,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => SendOtp()),
+                                      );
+                                    },
+                                    child: Text(
+                                      ' Click here',
+                                      style: TextStyle(
+                                        color: AppColors.goldColor,
+                                        fontSize: 15.sp,
+                                      ),
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 10.h),
+                                ],
                               ),
+                              SizedBox(height: 10.h),
+
                               InkWell(
                                 onTap: () {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SendOtp()),
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(),
+                                    ),
                                   );
                                 },
                                 child: Text(
-                                  ' Click here',
+
+                                  "Create new account?",
                                   style: TextStyle(
                                     color: AppColors.goldColor,
                                     fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ),
                             ],
+
                           ),
+
                         ),
                       ],
                     ),
